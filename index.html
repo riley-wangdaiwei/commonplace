@@ -63,7 +63,7 @@
 <h1>commonplace</h1>
 <div class="sub">a commonplace book -- questions, readings, ideas; capture now, link later, compile eventually</div>
 <div class="topbar">
-  <span class="tab on" data-v="notes">[notes]</span><span class="tab" data-v="films">[films]</span><span class="tab" data-v="books">[books]</span>
+  <span class="tab on" data-v="notes">[notes]</span><span class="tab" data-v="films">[films]</span><span class="tab" data-v="books">[reading]</span>
 </div>
 
 <div id="view-notes">
@@ -185,11 +185,15 @@
 <div class="sec-title">READ <span id="books-done-n"></span></div>
 <div id="books-done"></div>
 <div class="bar"></div>
-<div class="sec-title">ADD BOOK</div>
+<div class="sec-title">ADD READING</div>
 <div class="row"><input type="text" id="mb-title" placeholder="title (required)"></div>
+<div class="row"><input type="text" id="mb-url" placeholder="url (optional)"></div>
 <div class="row">
   <input type="text" id="mb-author" placeholder="author">
   <span style="flex:0 0 110px"><input type="text" id="mb-date" placeholder="date"></span>
+  <span style="flex:0 0 110px"><select id="mb-kind">
+    <option value="book">book</option><option value="article">article</option><option value="video">video</option>
+  </select></span>
   <span style="flex:0 0 100px"><select id="mb-status">
     <option value="todo">todo</option><option value="done">done</option>
   </select></span>
