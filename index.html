@@ -73,6 +73,15 @@
 <div id="list"></div>
 
 <div class="bar"></div>
+<div class="sec-title">GRAPH</div>
+<div class="row">
+  <span class="fixed"><button id="draw">[.] draw graph</button></span>
+  <span class="small">nodes sized by degree, shaded by category. red edge = negative-curvature bridge. dashed = suggested.</span>
+</div>
+<canvas id="graph-canvas" style="border:1px solid #111;max-width:100%"></canvas>
+<div id="graph-text" style="margin-top:8px"></div>
+
+<div class="bar"></div>
 <div class="sec-title">ADD NODE</div>
 <div class="row">
   <input type="text" id="f-title" placeholder="title (required)">
