@@ -604,6 +604,7 @@ function normFilm(f) {
 function normBook(b) {
   return { id: b.id || uid(), title: b.title || "(untitled)", author: b.author || "",
            date: b.date || "", kind: b.kind || "book", url: b.url || "",
+           category: b.category || "",
            status: b.status === "done" ? "done" : "todo", notes: b.notes || "" };
 }
 function mediaHtml(item, isF, openId, key) {
@@ -613,6 +614,7 @@ function mediaHtml(item, isF, openId, key) {
     + '<span class="tag">' + esc(item.status) + "</span><br>";
   var meta = isF ? [item.director, item.date, item.cinema] : [item.kind, item.author, item.date];
   h += '<span class="meta">' + esc(meta.filter(Boolean).join(" · ")) + "</span>";
+  if (!isF && item.category) h += ' <span class="tag">[' + esc(item.category) + "]</span>";
   if (!isF && item.url) h += ' <a href="' + esc(item.url) + '" target="_blank" rel="noopener">[link]</a>';
   h += "</div>";
   h += '<div class="node-body">';
@@ -636,6 +638,7 @@ function mediaHtml(item, isF, openId, key) {
       + '<span style="flex:0 0 100px"><select data-mb="status">'
       + ["todo", "done"].map(function (s) { return '<option value="' + s + '"' + (item.status === s ? " selected" : "") + ">" + s + "</option>"; }).join("")
       + "</select></span></div>"
+      + '<div class="row"><input type="text" data-mb="category" placeholder="category (tag, free text)" value="' + esc(item.category) + '"></div>'
       + '<div class="row"><input type="text" data-mb="url" placeholder="url" value="' + esc(item.url) + '"></div>'
       + '<div class="sec-title" style="font-size:13px">NOTES</div><textarea data-mb="notes">' + esc(item.notes) + "</textarea>";
   }
@@ -660,7 +663,7 @@ function wireMediaBox(boxId, isF, list, byIdFn) {
         if (b.getAttribute("data-mact") === "save") {
           var pfx = isF ? "mf" : "mb";
           var fields = isF ? ["title", "director", "date", "cinema", "comment", "status"]
-                           : ["title", "author", "date", "kind", "url", "notes", "status"];
+                           : ["title", "author", "date", "kind", "category", "url", "notes", "status"];
           fields.forEach(function (ff) {
             var inp = el.querySelector('[data-' + pfx + '="' + ff + '"]');
             if (inp) item[ff] = inp.value;
@@ -774,7 +777,7 @@ function filmFromNode(n) {
 function bookFromNode(n) {
   return normBook({ id: n.id, title: n.title, author: n.authors || "", date: n.date || "",
                     kind: n.kind && n.kind !== "book" ? n.kind : "book", url: n.url || "",
-                    status: n.status, notes: n.notes || "" });
+                    category: n.category || "", status: n.status, notes: n.notes || "" });
 }
 function routeNode(n) {
   // films & books live in their own lists, never in the graph
@@ -905,8 +908,9 @@ function init() {
     if (!t) { $("mb-title").focus(); return; }
     books.unshift(normBook({ title: t, author: $("mb-author").value.trim(),
       date: $("mb-date").value.trim(), kind: $("mb-kind").value, url: $("mb-url").value.trim(),
-      status: $("mb-status").value }));
-    $("mb-title").value = ""; $("mb-author").value = ""; $("mb-date").value = ""; $("mb-url").value = "";
+      category: $("mb-category").value.trim(), status: $("mb-status").value }));
+    $("mb-title").value = ""; $("mb-author").value = ""; $("mb-date").value = "";
+    $("mb-url").value = ""; $("mb-category").value = "";
     save(); renderMedia();
   };
 }
