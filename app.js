@@ -87,8 +87,9 @@ function catColor(c) {
   for (var i = 0; i < c.length; i++) h = (h * 31 + c.charCodeAt(i)) >>> 0;
   return PALETTE[h % PALETTE.length];
 }
-function graphData() {
-  var ns = nodes.map(function (n) { return { id: n.id, title: n.title, cat: n.category }; });
+function graphData(list) {
+  var arr = list || nodes;
+  var ns = arr.map(function (n) { return { id: n.id, title: n.title, cat: n.category }; });
   var idx = {};
   ns.forEach(function (x, i) { idx[x.id] = i; });
   var edges = [];
@@ -99,6 +100,7 @@ function graphData() {
     edges.push({ a: a, b: b, kind: kind, why: why || "" });
   }
   nodes.forEach(function (n) {
+    if (idx[n.id] == null) return;
     (n.links || []).forEach(function (l) { addEdge(n.id, l.to, "mine", l.why); });
     (n.suggested_links || []).forEach(function (l) {
       if (l.status === "pending") addEdge(n.id, l.to, "suggested", l.reason);
@@ -223,7 +225,7 @@ function drawGraph() {
   cv.style.width = W + "px"; cv.style.height = H + "px";
   var ctx = cv.getContext("2d");
   ctx.font = "11px monospace";
-  var g = graphMetrics(graphData());
+  var g = graphMetrics(graphData(filtered()));
   if (!g.ns.length) {
     ctx.fillStyle = "#111"; ctx.fillText("no nodes", 20, 30);
   } else {
@@ -545,6 +547,39 @@ function renderCatManage() {
   });
 }
 
+/* ---------- import ---------- */
+function normalizeNode(n) {
+  return {
+    id: n.id || uid(), type: n.type || "reading", title: n.title || "(untitled)",
+    category: n.category || "general", kind: n.kind || "other", url: n.url || "",
+    date: n.date || today(), status: n.status || "partial",
+    authors: n.authors || "", year: n.year || "", venue: n.venue || "",
+    thesis: n.thesis || "", quotes: n.quotes || "", critique: n.critique || "",
+    notes: n.notes || "", links: n.links || [], suggested_links: n.suggested_links || []
+  };
+}
+function wireImport() {
+  $("do-import").onclick = function () {
+    try {
+      var data = JSON.parse($("import-text").value);
+      var list = data.nodes || data;
+      var added = 0, skipped = 0;
+      list.forEach(function (raw) {
+        var n = normalizeNode(raw);
+        if (byId(n.id)) { skipped++; return; }
+        nodes.push(n); added++;
+      });
+      (data.categories || []).forEach(function (c) {
+        if (!cats.some(function (x) { return x[0] === c[0]; })) cats.push(c);
+      });
+      saveCats(); syncCatSelect();
+      $("import-text").value = "";
+      save(); render();
+      $("import-msg").textContent = "imported " + added + ", skipped " + skipped + " (dup id)";
+    } catch (e) { $("import-msg").textContent = "bad json: " + e.message; }
+  };
+}
+
 /* ---------- init ---------- */
 function init() {
   load();
@@ -609,6 +644,7 @@ function init() {
   };
   render();
   gistPull();
+  wireImport();
   if ($("draw")) $("draw").onclick = drawGraph;
 }
 document.addEventListener("DOMContentLoaded", init);
