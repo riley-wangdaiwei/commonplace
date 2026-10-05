@@ -6,8 +6,10 @@ Riles's commonplace book. Seed of an LLM wiki.
 - data: browser localStorage + gist backup (`reading-nodes.json`)
 - export: one `.md` per node with frontmatter (future wiki seed)
 
-Node types: reading / idea / question / concept. A node is anything worth
+Node types: reading / idea / question / film / book / concept. A node is anything worth
 pointing at; links (human-only, each with a `why`) are the connective tissue.
+Status: todo (to read/watch) / partial / done — the want-list and the finished list
+live together; filter by type for the film list, book list, etc.
 
 Live at https://riley-wangdaiwei.github.io/commonplace/
 
