@@ -8,6 +8,8 @@
 var LS_KEY = "reading-nodes-v1";
 var LS_CFG = "reading-notes-cfg-v1";
 var CATS_KEY = "reading-cats-v1";
+var FILMS_KEY = "commonplace-films-v1";
+var BOOKS_KEY = "commonplace-books-v1";
 var GIST_FILE = "reading-nodes.json";
 
 var CATS = [
@@ -24,6 +26,10 @@ var KINDS = ["paper", "article", "digest", "thread", "book", "other"];
 var nodes = [];
 var cfg = {};
 var cats = [];
+var films = [];
+var books = [];
+var openFilm = null;
+var openBook = null;
 var filterCat = "all";
 var filterType = "all";
 var query = "";
@@ -268,6 +274,8 @@ function load() {
     nodes = raw ? JSON.parse(raw) : seed();
   } catch (e) { nodes = seed(); }
   try { cfg = JSON.parse(localStorage.getItem(LS_CFG) || "{}"); } catch (e) { cfg = {}; }
+  try { films = JSON.parse(localStorage.getItem(FILMS_KEY) || "[]"); } catch (e) { films = []; }
+  try { books = JSON.parse(localStorage.getItem(BOOKS_KEY) || "[]"); } catch (e) { books = []; }
   loadCats();
 }
 function loadCats() {
@@ -285,6 +293,8 @@ function slugify(s) {
 }
 function save() {
   localStorage.setItem(LS_KEY, JSON.stringify(nodes));
+  localStorage.setItem(FILMS_KEY, JSON.stringify(films));
+  localStorage.setItem(BOOKS_KEY, JSON.stringify(books));
   schedulePush();
 }
 
@@ -307,7 +317,7 @@ function gistCall(method, path, body, cb) {
   xhr.send(body ? JSON.stringify(body) : null);
 }
 
-function envelope() { return { updatedAt: new Date().toISOString(), nodes: nodes }; }
+function envelope() { return { updatedAt: new Date().toISOString(), nodes: nodes, films: films, books: books }; }
 
 function gistPush() {
   if (!cfg.token || !cfg.gist) return;
@@ -334,14 +344,17 @@ function gistPull() {
       var env = JSON.parse(f.content);
       if (env.nodes && env.nodes.length >= nodes.length) {
         nodes = env.nodes;
-        localStorage.setItem(LS_KEY, JSON.stringify(nodes));
       } else if (env.nodes) {
-        // local has more -- push local up
-        gistPush(); render(); return;
+        gistPush(); render(); renderMedia(); return;
       }
-      setStatus("synced " + new Date().toLocaleTimeString() + " -- " + nodes.length + " nodes");
+      if (env.films) films = env.films;
+      if (env.books) books = env.books;
+      localStorage.setItem(LS_KEY, JSON.stringify(nodes));
+      localStorage.setItem(FILMS_KEY, JSON.stringify(films));
+      localStorage.setItem(BOOKS_KEY, JSON.stringify(books));
+      setStatus("synced " + new Date().toLocaleTimeString() + " -- " + nodes.length + " nodes, " + films.length + " films, " + books.length + " books");
     } catch (e) { setStatus("gist parse failed -- using local copy"); }
-    render();
+    render(); renderMedia();
   });
 }
 
@@ -408,7 +421,7 @@ function renderCats() {
   });
 }
 function renderTypes() {
-  var ts = ["reading", "idea", "question", "film", "book", "concept"];
+  var ts = ["reading", "idea", "question", "concept"];
   var h = '<span class="cat' + (filterType === "all" ? " on" : "") + '" data-t="all">[all]</span>';
   ts.forEach(function (t) {
     h += '<span class="cat' + (filterType === t ? " on" : "") + '" data-t="' + t + '">[' + t + "]</span>";
@@ -578,6 +591,107 @@ function renderCatManage() {
   });
 }
 
+/* ---------- films & books (separate lists, not graph nodes) ---------- */
+function filmById(id) { for (var i = 0; i < films.length; i++) if (films[i].id === id) return films[i]; return null; }
+function bookById(id) { for (var i = 0; i < books.length; i++) if (books[i].id === id) return books[i]; return null; }
+function normFilm(f) {
+  return { id: f.id || uid(), title: f.title || "(untitled)", director: f.director || "",
+           date: f.date || "", cinema: f.cinema || "", comment: f.comment || "",
+           status: f.status === "done" ? "done" : "todo" };
+}
+function normBook(b) {
+  return { id: b.id || uid(), title: b.title || "(untitled)", author: b.author || "",
+           date: b.date || "", status: b.status === "done" ? "done" : "todo", notes: b.notes || "" };
+}
+function mediaHtml(item, isF, openId, key) {
+  var open = openId === item.id;
+  var h = '<div class="node' + (open ? " open" : "") + '" ' + key + '="' + esc(item.id) + '">';
+  h += '<div class="node-head"><span class="t">' + esc(item.title) + '</span> '
+    + '<span class="tag">' + esc(item.status) + "</span><br>";
+  var meta = isF ? [item.director, item.date, item.cinema] : [item.author, item.date];
+  h += '<span class="meta">' + esc(meta.filter(Boolean).join(" · ")) + "</span></div>";
+  h += '<div class="node-body">';
+  h += '<div class="row"><input type="text" data-' + (isF ? "mf" : "mb") + '="title" value="' + esc(item.title) + '"></div>';
+  if (isF) {
+    h += '<div class="row"><input type="text" data-mf="director" placeholder="director" value="' + esc(item.director) + '">'
+      + '<span style="flex:0 0 110px"><input type="text" data-mf="date" placeholder="date" value="' + esc(item.date) + '"></span>'
+      + '<span style="flex:0 0 100px"><select data-mf="cinema"><option value="">cinema?</option>'
+      + ["一人", "影院", "家庭"].map(function (c) { return '<option' + (item.cinema === c ? " selected" : "") + ">" + c + "</option>"; }).join("")
+      + "</select></span>"
+      + '<span style="flex:0 0 100px"><select data-mf="status">'
+      + ["todo", "done"].map(function (s) { return '<option value="' + s + '"' + (item.status === s ? " selected" : "") + ">" + s + "</option>"; }).join("")
+      + "</select></span></div>"
+      + '<div class="sec-title" style="font-size:13px">COMMENT</div><textarea data-mf="comment">' + esc(item.comment) + "</textarea>";
+  } else {
+    h += '<div class="row"><input type="text" data-mb="author" placeholder="author" value="' + esc(item.author) + '">'
+      + '<span style="flex:0 0 110px"><input type="text" data-mb="date" placeholder="date" value="' + esc(item.date) + '"></span>'
+      + '<span style="flex:0 0 100px"><select data-mb="status">'
+      + ["todo", "done"].map(function (s) { return '<option value="' + s + '"' + (item.status === s ? " selected" : "") + ">" + s + "</option>"; }).join("")
+      + "</select></span></div>"
+      + '<div class="sec-title" style="font-size:13px">NOTES</div><textarea data-mb="notes">' + esc(item.notes) + "</textarea>";
+  }
+  h += '<div class="row" style="margin-top:8px"><span class="fixed"><button data-mact="save">[ok] save</button></span>'
+    + '<span class="fixed"><button data-mact="del" class="danger">[x] delete</button></span></div>';
+  h += "</div></div>";
+  return h;
+}
+function wireMediaBox(boxId, isF, list, byIdFn) {
+  var box = $(boxId);
+  box.querySelectorAll(".node").forEach(function (el) {
+    var id = el.getAttribute(isF ? "data-fid" : "data-bid");
+    el.querySelector(".node-head").onclick = function () {
+      if (isF) openFilm = openFilm === id ? null : id;
+      else openBook = openBook === id ? null : id;
+      renderMedia();
+    };
+    el.querySelectorAll("button").forEach(function (b) {
+      b.onclick = function (ev) {
+        ev.stopPropagation();
+        var item = byIdFn(id);
+        if (b.getAttribute("data-mact") === "save") {
+          var pfx = isF ? "mf" : "mb";
+          var fields = isF ? ["title", "director", "date", "cinema", "comment", "status"]
+                           : ["title", "author", "date", "notes", "status"];
+          fields.forEach(function (ff) {
+            var inp = el.querySelector('[data-' + pfx + '="' + ff + '"]');
+            if (inp) item[ff] = inp.value;
+          });
+          save(); renderMedia();
+        } else if (b.getAttribute("data-mact") === "del") {
+          if (confirm("delete?")) {
+            if (isF) films = films.filter(function (x) { return x.id !== id; });
+            else books = books.filter(function (x) { return x.id !== id; });
+            save(); renderMedia();
+          }
+        }
+      };
+    });
+  });
+}
+function renderFilms() {
+  var todo = films.filter(function (f) { return f.status !== "done"; });
+  var done = films.filter(function (f) { return f.status === "done"; });
+  $("films-todo-n").textContent = "(" + todo.length + ")";
+  $("films-done-n").textContent = "(" + done.length + ")";
+  $("films-todo").innerHTML = todo.map(function (f) { return mediaHtml(f, true, openFilm, "data-fid"); }).join("")
+    || '<div class="small">nothing queued.</div>';
+  $("films-done").innerHTML = done.map(function (f) { return mediaHtml(f, true, openFilm, "data-fid"); }).join("")
+    || '<div class="small">nothing watched yet.</div>';
+  wireMediaBox("view-films", true, films, filmById);
+}
+function renderBooks() {
+  var todo = books.filter(function (b) { return b.status !== "done"; });
+  var done = books.filter(function (b) { return b.status === "done"; });
+  $("books-todo-n").textContent = "(" + todo.length + ")";
+  $("books-done-n").textContent = "(" + done.length + ")";
+  $("books-todo").innerHTML = todo.map(function (b) { return mediaHtml(b, false, openBook, "data-bid"); }).join("")
+    || '<div class="small">nothing queued.</div>';
+  $("books-done").innerHTML = done.map(function (b) { return mediaHtml(b, false, openBook, "data-bid"); }).join("")
+    || '<div class="small">nothing read yet.</div>';
+  wireMediaBox("view-books", false, books, bookById);
+}
+function renderMedia() { renderFilms(); renderBooks(); }
+
 /* ---------- import ---------- */
 function normalizeNode(n) {
   return {
@@ -590,24 +704,50 @@ function normalizeNode(n) {
     notes: n.notes || "", links: n.links || [], suggested_links: n.suggested_links || []
   };
 }
+function filmFromNode(n) {
+  var cinema = "", comment = n.notes || "";
+  var m = comment.match(/^watched:\s*(.*)$/m);
+  if (m) { cinema = m[1].trim(); comment = comment.replace(m[0], "").trim(); }
+  return normFilm({ id: n.id, title: n.title, director: n.authors || "", date: n.date || "",
+                    cinema: cinema, comment: comment, status: n.status });
+}
+function bookFromNode(n) {
+  return normBook({ id: n.id, title: n.title, author: n.authors || "", date: n.date || "",
+                    status: n.status, notes: n.notes || "" });
+}
+function routeNode(n) {
+  // films & books live in their own lists, never in the graph
+  if (n.type === "film") { if (!filmById(n.id)) { films.push(filmFromNode(n)); return "film"; } return "dup"; }
+  if (n.type === "book") { if (!bookById(n.id)) { books.push(bookFromNode(n)); return "book"; } return "dup"; }
+  if (!byId(n.id)) { nodes.push(n); return "node"; }
+  return "dup";
+}
 function wireImport() {
   $("do-import").onclick = function () {
     try {
       var data = JSON.parse($("import-text").value);
-      var list = data.nodes || data;
-      var added = 0, skipped = 0;
+      var list = data.nodes || (Array.isArray(data) ? data : []);
+      var added = { node: 0, film: 0, book: 0 }, skipped = 0;
       list.forEach(function (raw) {
-        var n = normalizeNode(raw);
-        if (byId(n.id)) { skipped++; return; }
-        nodes.push(n); added++;
+        var r = routeNode(normalizeNode(raw));
+        if (r === "dup") skipped++; else added[r]++;
+      });
+      (data.films || []).forEach(function (raw) {
+        var f = normFilm(raw);
+        if (!filmById(f.id)) { films.push(f); added.film++; } else skipped++;
+      });
+      (data.books || []).forEach(function (raw) {
+        var b = normBook(raw);
+        if (!bookById(b.id)) { books.push(b); added.book++; } else skipped++;
       });
       (data.categories || []).forEach(function (c) {
         if (!cats.some(function (x) { return x[0] === c[0]; })) cats.push(c);
       });
       saveCats(); syncCatSelect();
       $("import-text").value = "";
-      save(); render();
-      $("import-msg").textContent = "imported " + added + ", skipped " + skipped + " (dup id)";
+      save(); render(); renderMedia();
+      $("import-msg").textContent = "imported nodes:" + added.node + " films:" + added.film
+        + " books:" + added.book + " skipped:" + skipped;
     } catch (e) { $("import-msg").textContent = "bad json: " + e.message; }
   };
 }
@@ -675,8 +815,36 @@ function init() {
     } else gistPull();
   };
   render();
+  renderMedia();
   gistPull();
   wireImport();
   if ($("draw")) $("draw").onclick = drawGraph;
+  // tabs
+  document.querySelectorAll(".tab").forEach(function (el) {
+    el.onclick = function () {
+      document.querySelectorAll(".tab").forEach(function (x) { x.classList.remove("on"); });
+      el.classList.add("on");
+      var v = el.getAttribute("data-v");
+      $("view-notes").style.display = v === "notes" ? "block" : "none";
+      $("view-films").style.display = v === "films" ? "block" : "none";
+      $("view-books").style.display = v === "books" ? "block" : "none";
+    };
+  });
+  $("mf-add").onclick = function () {
+    var t = $("mf-title").value.trim();
+    if (!t) { $("mf-title").focus(); return; }
+    films.unshift(normFilm({ title: t, director: $("mf-director").value.trim(),
+      date: $("mf-date").value.trim(), cinema: $("mf-cinema").value, status: $("mf-status").value }));
+    $("mf-title").value = ""; $("mf-director").value = ""; $("mf-date").value = "";
+    save(); renderMedia();
+  };
+  $("mb-add").onclick = function () {
+    var t = $("mb-title").value.trim();
+    if (!t) { $("mb-title").focus(); return; }
+    books.unshift(normBook({ title: t, author: $("mb-author").value.trim(),
+      date: $("mb-date").value.trim(), status: $("mb-status").value }));
+    $("mb-title").value = ""; $("mb-author").value = ""; $("mb-date").value = "";
+    save(); renderMedia();
+  };
 }
 document.addEventListener("DOMContentLoaded", init);
