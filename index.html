@@ -106,6 +106,15 @@
 <div class="small">presets are yours to rename/remove. deleting keeps existing nodes as-is.</div>
 
 <div class="bar"></div>
+<div class="sec-title">IMPORT</div>
+<div class="row"><textarea id="import-text" style="min-height:56px" placeholder='paste {"nodes":[...], "categories":[...]}'></textarea></div>
+<div class="row">
+  <span class="fixed"><button id="do-import">[+] import</button></span>
+  <span class="small" id="import-msg"></span>
+</div>
+<div class="small">merges by node id; existing ids are skipped. categories merge by slug.</div>
+
+<div class="bar"></div>
 <div class="sec-title">EXPORT</div>
 <div class="row">
   <span class="fixed"><button id="exp-all">[>] export all as .md</button></span>
