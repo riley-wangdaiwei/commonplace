@@ -416,6 +416,7 @@ function render() {
       + "</span></div>";
     h += '<div class="node-body">';
     if (n.url) h += '<div class="row"><a href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(n.url) + "</a></div>";
+    h += '<div class="row"><input type="text" data-f="url" placeholder="url" value="' + esc(n.url || "") + '"></div>';
     h += '<div class="sec-title" style="font-size:13px">BIB</div>'
       + '<div class="row"><input type="text" data-f="authors" placeholder="authors" value="' + esc(n.authors || "") + '">'
       + '<span style="flex:0 0 80px"><input type="text" data-f="year" placeholder="year" value="' + esc(n.year || "") + '"></span>'
@@ -476,7 +477,7 @@ function render() {
         var act = b.getAttribute("data-act");
         var n = byId(id);
         if (act === "save-notes") {
-          ["notes", "authors", "year", "venue", "thesis", "quotes", "critique"].forEach(function (f) {
+          ["notes", "url", "authors", "year", "venue", "thesis", "quotes", "critique"].forEach(function (f) {
             var inp = el.querySelector('[data-f="' + f + '"]');
             if (inp) n[f] = inp.value;
           });
