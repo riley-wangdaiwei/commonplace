@@ -25,6 +25,7 @@ var nodes = [];
 var cfg = {};
 var cats = [];
 var filterCat = "all";
+var filterType = "all";
 var query = "";
 var openId = null;
 var pushTimer = null;
@@ -90,7 +91,7 @@ function catColor(c) {
 }
 function graphData(list) {
   var arr = list || nodes;
-  var ns = arr.map(function (n) { return { id: n.id, title: n.title, label: n.label || "", cat: n.category, type: n.type }; });
+  var ns = arr.map(function (n) { return { id: n.id, title: n.title, label: n.label || "", cat: n.category, type: n.type || "reading" }; });
   var idx = {};
   ns.forEach(function (x, i) { idx[x.id] = i; });
   var edges = [];
@@ -200,7 +201,7 @@ function renderGraphText(g) {
   });
   h += '<div class="sec-title" style="font-size:13px;margin-top:8px">NODES</div>';
   g.ns.forEach(function (x) {
-    h += '<div class="small">' + esc(x.label || x.title) + " : degree " + (g.deg[x.id] || 0)
+    h += '<div class="small">' + esc(x.label || x.title) + " [" + esc(x.type) + "] : degree " + (g.deg[x.id] || 0)
       + ", curvature " + (g.ncurv[x.id] >= 0 ? "+" : "") + g.ncurv[x.id].toFixed(1) + "</div>";
   });
   h += '<div class="small" style="margin-top:8px">curvature = 4 - deg(u) - deg(v) + 3*triangles.'
@@ -389,6 +390,7 @@ function filtered() {
   var q = query.trim().toLowerCase();
   return nodes.filter(function (n) {
     if (filterCat !== "all" && n.category !== filterCat) return false;
+    if (filterType !== "all" && (n.type || "reading") !== filterType) return false;
     if (!q) return true;
     return (n.title + " " + (n.notes || "") + " " + (n.url || "")
       + " " + (n.authors || "") + " " + (n.thesis || "")).toLowerCase().indexOf(q) >= 0;
@@ -405,8 +407,20 @@ function renderCats() {
     el.onclick = function () { filterCat = el.getAttribute("data-c"); render(); };
   });
 }
+function renderTypes() {
+  var ts = ["reading", "idea", "question", "film", "book", "concept"];
+  var h = '<span class="cat' + (filterType === "all" ? " on" : "") + '" data-t="all">[all]</span>';
+  ts.forEach(function (t) {
+    h += '<span class="cat' + (filterType === t ? " on" : "") + '" data-t="' + t + '">[' + t + "]</span>";
+  });
+  $("types").innerHTML = h;
+  $("types").querySelectorAll(".cat").forEach(function (el) {
+    el.onclick = function () { filterType = el.getAttribute("data-t"); render(); };
+  });
+}
 function render() {
   renderCats();
+  renderTypes();
   renderCatManage();
   var list = filtered().slice().sort(function (a, b) { return b.date.localeCompare(a.date); });
   $("count").textContent = "(" + list.length + "/" + nodes.length + ")";
@@ -428,6 +442,8 @@ function render() {
       + '<option value="reading"' + (n.type === "reading" ? " selected" : "") + '>reading</option>'
       + '<option value="idea"' + (n.type === "idea" ? " selected" : "") + '>idea</option>'
       + '<option value="question"' + (n.type === "question" ? " selected" : "") + '>question</option>'
+      + '<option value="film"' + (n.type === "film" ? " selected" : "") + '>film</option>'
+      + '<option value="book"' + (n.type === "book" ? " selected" : "") + '>book</option>'
       + '<option value="concept"' + (n.type === "concept" ? " selected" : "") + '>concept</option>'
       + "</select></span></div>";
     h += '<div class="sec-title" style="font-size:13px">BIB</div>'
@@ -469,7 +485,11 @@ function render() {
       + '<span class="fixed"><button data-act="link">[+] link</button></span></div>';
     h += '<div class="row" style="margin-top:8px">'
       + '<span class="fixed"><button data-act="save-notes">[ok] save</button></span>'
-      + '<span class="fixed"><button data-act="toggle-status">[' + (n.status === "partial" ? "done?" : "partial?") + "]</button></span>"
+      + '<span class="fixed"><select data-f="status">'
+      + ["todo", "partial", "done"].map(function (s) {
+          return '<option value="' + s + '"' + (n.status === s ? " selected" : "") + ">" + s + "</option>";
+        }).join("")
+      + "</select></span>"
       + '<span class="fixed"><button data-act="export">[>] .md</button></span>'
       + '<span class="fixed"><button data-act="del" class="danger">[x] delete</button></span>'
       + "</div>";
@@ -490,14 +510,11 @@ function render() {
         var act = b.getAttribute("data-act");
         var n = byId(id);
         if (act === "save-notes") {
-          ["notes", "url", "label", "type", "authors", "year", "venue", "thesis", "quotes", "critique"].forEach(function (f) {
+          ["notes", "url", "label", "type", "status", "authors", "year", "venue", "thesis", "quotes", "critique"].forEach(function (f) {
             var inp = el.querySelector('[data-f="' + f + '"]');
             if (inp) n[f] = inp.value;
           });
           save(); setStatus("saved locally"); render();
-        } else if (act === "toggle-status") {
-          n.status = n.status === "partial" ? "done" : "partial";
-          save(); render();
         } else if (act === "link") {
           var to = el.querySelector('[data-f="linkto"]').value;
           var why = el.querySelector('[data-f="linkwhy"]').value.trim();
@@ -610,7 +627,7 @@ function init() {
       id: uid(), type: $("f-type").value, title: t,
       category: fc.value, kind: fk.value,
       url: $("f-url").value.trim(), date: today(),
-      status: "partial", label: "", notes: "", links: [], suggested_links: []
+      status: $("f-status").value, label: "", notes: "", links: [], suggested_links: []
     });
     $("f-title").value = ""; $("f-url").value = "";
     save(); render();
