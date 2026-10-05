@@ -218,7 +218,7 @@ function renderGraphText(g) {
 function drawGraph() {
   var cv = $("graph-canvas");
   if (!cv) return;
-  var W = cv.parentElement.clientWidth || 800, H = 420;
+  var W = cv.parentElement.clientWidth || 800, H = 560;
   cv.width = W; cv.height = H;
   cv.style.width = W + "px"; cv.style.height = H + "px";
   var ctx = cv.getContext("2d");
