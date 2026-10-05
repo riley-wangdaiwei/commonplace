@@ -53,13 +53,20 @@
   .small { font-size: 12px; color: #555; }
   #status { white-space: pre-wrap; }
   a { color: #111; }
+  .topbar { margin: 12px 0 4px 0; }
+  .tab { cursor: pointer; padding: 2px 10px; border: 1px solid #111; margin-right: 6px; user-select: none; }
+  .tab.on { background: #111; color: #fff; }
 </style>
 </head>
 <body>
 
 <h1>commonplace</h1>
 <div class="sub">a commonplace book -- questions, readings, ideas; capture now, link later, compile eventually</div>
+<div class="topbar">
+  <span class="tab on" data-v="notes">[notes]</span><span class="tab" data-v="films">[films]</span><span class="tab" data-v="books">[books]</span>
+</div>
 
+<div id="view-notes">
 <div class="bar"></div>
 <div class="sec-title">FIND</div>
 <div class="row">
@@ -95,8 +102,6 @@
     <option value="reading">reading</option>
     <option value="idea">idea</option>
     <option value="question">question</option>
-    <option value="film">film</option>
-    <option value="book">book</option>
   </select></span>
   <span><select id="f-status">
     <option value="todo">todo</option>
@@ -147,6 +152,50 @@
   <div class="row"><span class="fixed"><button id="s-save">[ok] save</button></span></div>
   <div class="small">token stays in this browser only. same pattern as rithub.</div>
 </div>
+</div><!-- /view-notes -->
+
+<div id="view-films" style="display:none">
+<div class="bar"></div>
+<div class="sec-title">TO WATCH <span id="films-todo-n"></span></div>
+<div id="films-todo"></div>
+<div class="bar"></div>
+<div class="sec-title">WATCHED <span id="films-done-n"></span></div>
+<div id="films-done"></div>
+<div class="bar"></div>
+<div class="sec-title">ADD FILM</div>
+<div class="row"><input type="text" id="mf-title" placeholder="title (required)"></div>
+<div class="row">
+  <input type="text" id="mf-director" placeholder="director">
+  <span style="flex:0 0 110px"><input type="text" id="mf-date" placeholder="date"></span>
+  <span style="flex:0 0 100px"><select id="mf-cinema">
+    <option value="">cinema?</option><option>一人</option><option>影院</option><option>家庭</option>
+  </select></span>
+  <span style="flex:0 0 100px"><select id="mf-status">
+    <option value="todo">todo</option><option value="done">done</option>
+  </select></span>
+  <span class="fixed"><button id="mf-add">[+] add</button></span>
+</div>
+</div><!-- /view-films -->
+
+<div id="view-books" style="display:none">
+<div class="bar"></div>
+<div class="sec-title">TO READ <span id="books-todo-n"></span></div>
+<div id="books-todo"></div>
+<div class="bar"></div>
+<div class="sec-title">READ <span id="books-done-n"></span></div>
+<div id="books-done"></div>
+<div class="bar"></div>
+<div class="sec-title">ADD BOOK</div>
+<div class="row"><input type="text" id="mb-title" placeholder="title (required)"></div>
+<div class="row">
+  <input type="text" id="mb-author" placeholder="author">
+  <span style="flex:0 0 110px"><input type="text" id="mb-date" placeholder="date"></span>
+  <span style="flex:0 0 100px"><select id="mb-status">
+    <option value="todo">todo</option><option value="done">done</option>
+  </select></span>
+  <span class="fixed"><button id="mb-add">[+] add</button></span>
+</div>
+</div><!-- /view-books -->
 
 <div class="bar"></div>
 <div class="small">nodes are yours. links are yours. the llm only suggests -- never writes links.</div>
