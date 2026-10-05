@@ -11,8 +11,9 @@ pointing at; links (human-only, each with a `why`) are the connective tissue.
 Status: todo (to read) / partial / done.
 
 Separate datasets (top tabs, not graph nodes): **films** (to watch / watched,
-with director/date/cinema/comment) and **books** (to read / read, with
-author/date). Same localStorage + gist backup, same ASCII UI.
+with director/date/cinema/comment) and **reading** (to read / read, with
+author/date/url/kind: book/article/video). Same localStorage + gist backup,
+same ASCII UI.
 
 Live at https://riley-wangdaiwei.github.io/commonplace/
 
