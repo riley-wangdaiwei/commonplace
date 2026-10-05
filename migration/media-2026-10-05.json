@@ -269,7 +269,9 @@
    "author": "王朔",
    "date": "",
    "status": "todo",
-   "notes": ""
+   "notes": "",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-book-beginning-theory",
@@ -277,7 +279,9 @@
    "author": "Peter Barry",
    "date": "2026-04-24",
    "status": "done",
-   "notes": ""
+   "notes": "",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-book-中国话",
@@ -285,7 +289,9 @@
    "author": "郑子宁",
    "date": "2026-03-31",
    "status": "done",
-   "notes": ""
+   "notes": "",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-book-the-remains-of-the-day",
@@ -293,7 +299,9 @@
    "author": "Kazuo Ishiguro",
    "date": "2026-03-03",
    "status": "done",
-   "notes": ""
+   "notes": "",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-book-how-we-invented-freedom-why-it-matters",
@@ -301,7 +309,9 @@
    "author": "Daniel Hannan",
    "date": "2026-05-25",
    "status": "done",
-   "notes": ""
+   "notes": "",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-toread-汉书",
@@ -309,7 +319,9 @@
    "author": "",
    "date": "",
    "status": "todo",
-   "notes": "Notion Current list / Other"
+   "notes": "Notion Current list / Other",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-toread-beyond-culture",
@@ -317,7 +329,9 @@
    "author": "",
    "date": "",
    "status": "todo",
-   "notes": "Notion Current list / Other"
+   "notes": "Notion Current list / Other",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-toread-examined-life",
@@ -325,7 +339,9 @@
    "author": "",
    "date": "",
    "status": "todo",
-   "notes": "Notion Current list / Other"
+   "notes": "Notion Current list / Other",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-toread-密码战争",
@@ -333,7 +349,9 @@
    "author": "",
    "date": "",
    "status": "todo",
-   "notes": "Notion Current list / Other"
+   "notes": "Notion Current list / Other",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-toread-爱你就像爱生命",
@@ -341,7 +359,9 @@
    "author": "",
    "date": "",
    "status": "todo",
-   "notes": "Notion Current list / Other"
+   "notes": "Notion Current list / Other",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-toread-台北人",
@@ -349,7 +369,9 @@
    "author": "",
    "date": "",
    "status": "todo",
-   "notes": "Notion Current list / Novels"
+   "notes": "Notion Current list / Novels",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-toread-古拉格群岛",
@@ -357,7 +379,9 @@
    "author": "",
    "date": "",
    "status": "todo",
-   "notes": "Notion Current list / Novels"
+   "notes": "Notion Current list / Novels",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-toread-地下室手记",
@@ -365,7 +389,9 @@
    "author": "",
    "date": "",
    "status": "todo",
-   "notes": "Notion Current list / Novels"
+   "notes": "Notion Current list / Novels",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-toread-oranges-are-not-the-only-fruit",
@@ -373,7 +399,9 @@
    "author": "",
    "date": "",
    "status": "todo",
-   "notes": "Notion Current list / Novels"
+   "notes": "Notion Current list / Novels",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-toread-卡尔维诺",
@@ -381,7 +409,9 @@
    "author": "",
    "date": "",
    "status": "todo",
-   "notes": "Notion Current list / Novels"
+   "notes": "Notion Current list / Novels",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-toread-the-source-of-normativity-christine-kors",
@@ -389,7 +419,9 @@
    "author": "",
    "date": "",
    "status": "todo",
-   "notes": "Notion Current list / Philosophy / Normativity"
+   "notes": "Notion Current list / Philosophy / Normativity",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-toread-纯粹理性批判",
@@ -397,7 +429,9 @@
    "author": "",
    "date": "",
    "status": "todo",
-   "notes": "Notion Current list / Philosophy / Normativity"
+   "notes": "Notion Current list / Philosophy / Normativity",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-toread-john-rawls-modern-political-philosophy",
@@ -405,7 +439,9 @@
    "author": "",
    "date": "",
    "status": "todo",
-   "notes": "Notion Current list / Political Philosophy"
+   "notes": "Notion Current list / Political Philosophy",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-toread-askell-pareto-principles-in-infinite-eth",
@@ -413,7 +449,9 @@
    "author": "",
    "date": "",
    "status": "todo",
-   "notes": "Notion Current list / Political Philosophy"
+   "notes": "Notion Current list / Political Philosophy",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-toread-特权与焦虑",
@@ -421,7 +459,9 @@
    "author": "",
    "date": "",
    "status": "todo",
-   "notes": "Notion Current list / Sociology"
+   "notes": "Notion Current list / Sociology",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-toread-压缩现代性",
@@ -429,7 +469,9 @@
    "author": "",
    "date": "",
    "status": "todo",
-   "notes": "Notion Current list / Sociology"
+   "notes": "Notion Current list / Sociology",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-toread-how-to-read-a-book-adler",
@@ -437,7 +479,9 @@
    "author": "",
    "date": "",
    "status": "todo",
-   "notes": "Notion Current list / Literature"
+   "notes": "Notion Current list / Literature",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-toread-norton-anthology",
@@ -445,7 +489,9 @@
    "author": "",
    "date": "",
    "status": "todo",
-   "notes": "Notion Current list / Literature"
+   "notes": "Notion Current list / Literature",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-toread-late-essays-coetzee",
@@ -453,7 +499,9 @@
    "author": "",
    "date": "",
    "status": "todo",
-   "notes": "Notion Current list / Literature"
+   "notes": "Notion Current list / Literature",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-toread-the-art-of-voice-hoagland",
@@ -461,7 +509,9 @@
    "author": "",
    "date": "",
    "status": "todo",
-   "notes": "Notion Current list / Literature"
+   "notes": "Notion Current list / Literature",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-toread-重读二十世纪中国小说",
@@ -469,7 +519,9 @@
    "author": "",
    "date": "",
    "status": "todo",
-   "notes": "Notion Current list / Literature"
+   "notes": "Notion Current list / Literature",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-toread-jude-the-obscure",
@@ -477,7 +529,9 @@
    "author": "",
    "date": "",
    "status": "todo",
-   "notes": "Notion Current list / Literature"
+   "notes": "Notion Current list / Literature",
+   "kind": "book",
+   "url": ""
   },
   {
    "id": "n-toread-一个陌生女人的来信",
@@ -485,7 +539,9 @@
    "author": "",
    "date": "",
    "status": "todo",
-   "notes": "Notion Current list / Literature"
+   "notes": "Notion Current list / Literature",
+   "kind": "book",
+   "url": ""
   }
  ],
  "nodes": [
