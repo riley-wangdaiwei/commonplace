@@ -30,6 +30,7 @@ var films = [];
 var books = [];
 var openFilm = null;
 var openBook = null;
+var openCat = null;
 var filterCat = "all";
 var filterType = "all";
 var query = "";
@@ -435,6 +436,7 @@ function render() {
   renderCats();
   renderTypes();
   renderCatManage();
+  renderShelves();
   var list = filtered().slice().sort(function (a, b) { return b.date.localeCompare(a.date); });
   $("count").textContent = "(" + list.length + "/" + nodes.length + ")";
   var h = "";
@@ -699,6 +701,57 @@ function renderBooks() {
 }
 function renderMedia() { renderFilms(); renderBooks(); }
 
+/* ---------- category shelves ---------- */
+function catColor(name) {
+  for (var i = 0; i < cats.length; i++) if (cats[i][0] === name) return cats[i][1];
+  return "#fff";
+}
+function renderShelves() {
+  var box = $("cat-shelves");
+  var counts = {};
+  nodes.forEach(function (n) { counts[n.category] = (counts[n.category] || 0) + 1; });
+  var names = cats.map(function (c) { return c[0]; });
+  // include categories that exist on nodes but were deleted from the list
+  Object.keys(counts).forEach(function (k) { if (names.indexOf(k) < 0) names.push(k); });
+  if (!names.length) { box.innerHTML = '<div class="small">no categories yet. add some in the notes tab.</div>'; return; }
+  box.innerHTML = names.map(function (name) {
+    var open = openCat === name;
+    var list = nodes.filter(function (n) { return n.category === name; });
+    var h = '<div class="node' + (open ? " open" : "") + '" data-cat="' + esc(name) + '">';
+    h += '<div class="node-head"><span class="chip" style="background:' + esc(catColor(name)) + '"></span> '
+      + "<b>" + esc(name) + "</b> (" + list.length + ")</div>";
+    h += '<div class="node-body">';
+    if (!list.length) h += '<div class="small">empty shelf.</div>';
+    list.forEach(function (n) {
+      h += '<div class="row" style="margin:2px 0"><span class="t" data-goto="' + esc(n.id) + '" style="cursor:pointer">'
+        + esc(n.label || n.title) + '</span> <span class="tag">' + esc(n.type) + '</span> '
+        + '<span class="tag">' + esc(n.status) + "</span></div>";
+    });
+    h += "</div></div>";
+    return h;
+  }).join("");
+  box.querySelectorAll(".node").forEach(function (el) {
+    var name = el.getAttribute("data-cat");
+    el.querySelector(".node-head").onclick = function () {
+      openCat = openCat === name ? null : name;
+      renderShelves();
+    };
+  });
+  box.querySelectorAll("[data-goto]").forEach(function (el) {
+    el.onclick = function (ev) {
+      ev.stopPropagation();
+      var id = el.getAttribute("data-goto");
+      // jump to the node in the notes tab
+      $("q").value = ""; q = ""; activeCat = ""; activeType = ""; renderTypes(); renderCatsList();
+      openId = id;
+      document.querySelector('.tab[data-v="notes"]').click();
+      render();
+      var target = document.querySelector('.node[data-nid="' + id + '"]');
+      if (target) target.scrollIntoView();
+    };
+  });
+}
+
 /* ---------- import ---------- */
 function normalizeNode(n) {
   return {
@@ -828,14 +881,15 @@ function init() {
   wireImport();
   if ($("draw")) $("draw").onclick = drawGraph;
   // tabs
+  var VIEWS = { notes: "view-notes", films: "view-films", books: "view-books", cats: "view-cats" };
   document.querySelectorAll(".tab").forEach(function (el) {
     el.onclick = function () {
       document.querySelectorAll(".tab").forEach(function (x) { x.classList.remove("on"); });
       el.classList.add("on");
       var v = el.getAttribute("data-v");
-      $("view-notes").style.display = v === "notes" ? "block" : "none";
-      $("view-films").style.display = v === "films" ? "block" : "none";
-      $("view-books").style.display = v === "books" ? "block" : "none";
+      Object.keys(VIEWS).forEach(function (k) {
+        $(VIEWS[k]).style.display = k === v ? "block" : "none";
+      });
     };
   });
   $("mf-add").onclick = function () {
