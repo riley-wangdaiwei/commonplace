@@ -7,6 +7,7 @@
 
 var LS_KEY = "reading-nodes-v1";
 var LS_CFG = "reading-notes-cfg-v1";
+var CATS_KEY = "reading-cats-v1";
 var GIST_FILE = "reading-nodes.json";
 
 var CATS = [
@@ -22,6 +23,7 @@ var KINDS = ["paper", "article", "digest", "thread", "book", "other"];
 
 var nodes = [];
 var cfg = {};
+var cats = [];
 var filterCat = "all";
 var query = "";
 var openId = null;
@@ -41,7 +43,7 @@ function today() {
   return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
 }
 function catLabel(c) {
-  for (var i = 0; i < CATS.length; i++) if (CATS[i][0] === c) return CATS[i][1];
+  for (var i = 0; i < cats.length; i++) if (cats[i][0] === c) return cats[i][1];
   return c;
 }
 function byId(id) {
@@ -60,6 +62,12 @@ function seed() {
     url: "https://dev.to/kielltampubolon/mcp-servers-had-a-rough-48-hours-4-unauthenticated-cves-4oco",
     date: "2026-10-04",
     status: "partial",
+    authors: "kielltampubolon",
+    year: "2026",
+    venue: "dev.to",
+    thesis: "多个 MCP 服务器把工具接口裸奔上网, 认证缺失是系统性问题",
+    quotes: "",
+    critique: "",
     notes: [
       "- 4 个 MCP 服务器的 HTTP/SSE 工具接口没设认证, 谁都能连 (CVSS 9.8/10.0)",
       "- GitLab Workhorse 那个最狠: 工具调用能把服务器环境变量读出来 -- 字符串越过信任边界",
@@ -79,6 +87,20 @@ function load() {
     nodes = raw ? JSON.parse(raw) : seed();
   } catch (e) { nodes = seed(); }
   try { cfg = JSON.parse(localStorage.getItem(LS_CFG) || "{}"); } catch (e) { cfg = {}; }
+  loadCats();
+}
+function loadCats() {
+  try {
+    var raw = localStorage.getItem(CATS_KEY);
+    cats = raw ? JSON.parse(raw) : CATS.slice();
+  } catch (e) { cats = CATS.slice(); }
+  if (!cats.length) cats = CATS.slice();
+}
+function saveCats() {
+  localStorage.setItem(CATS_KEY, JSON.stringify(cats));
+}
+function slugify(s) {
+  return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || ("c" + Date.now().toString(36));
 }
 function save() {
   localStorage.setItem(LS_KEY, JSON.stringify(nodes));
@@ -147,7 +169,11 @@ function nodeMd(n) {
   var L = ["---", "id: " + n.id, "type: " + n.type,
     "title: " + JSON.stringify(n.title), "category: " + n.category,
     "kind: " + n.kind, "url: " + (n.url || ""), "date: " + n.date,
-    "status: " + n.status];
+    "status: " + n.status,
+    "authors: " + JSON.stringify(n.authors || ""),
+    "year: " + JSON.stringify(n.year || ""),
+    "venue: " + JSON.stringify(n.venue || ""),
+    "thesis: " + JSON.stringify(n.thesis || "")];
   if (n.links && n.links.length) {
     L.push("links:");
     n.links.forEach(function (l) {
@@ -155,7 +181,10 @@ function nodeMd(n) {
       if (l.why) L.push("    why: " + JSON.stringify(l.why));
     });
   } else L.push("links: []");
-  L.push("---", "", n.notes || "", "");
+  L.push("---", "");
+  if (n.quotes) L.push("## quotes", "", n.quotes, "");
+  if (n.critique) L.push("## critique", "", n.critique, "");
+  L.push(n.notes || "", "");
   return L.join("\n");
 }
 function download(name, text) {
@@ -172,13 +201,14 @@ function filtered() {
   return nodes.filter(function (n) {
     if (filterCat !== "all" && n.category !== filterCat) return false;
     if (!q) return true;
-    return (n.title + " " + (n.notes || "") + " " + (n.url || "")).toLowerCase().indexOf(q) >= 0;
+    return (n.title + " " + (n.notes || "") + " " + (n.url || "")
+      + " " + (n.authors || "") + " " + (n.thesis || "")).toLowerCase().indexOf(q) >= 0;
   });
 }
 function renderCats() {
   var h = '<span class="cat' + (filterCat === "all" ? " on" : "") + '" data-c="all">[all]</span>';
-  CATS.forEach(function (c) {
-    h += '<span class="cat' + (filterCat === c[0] ? " on" : "") + '" data-c="' + c[0] + '">[' + esc(c[1]) + "]</span>";
+  cats.forEach(function (c) {
+    h += '<span class="cat' + (filterCat === c[0] ? " on" : "") + '" data-c="' + esc(c[0]) + '">[' + esc(c[1]) + "]</span>";
   });
   $("cats").innerHTML = h;
   var els = $("cats").querySelectorAll(".cat");
@@ -188,6 +218,7 @@ function renderCats() {
 }
 function render() {
   renderCats();
+  renderCatManage();
   var list = filtered().slice().sort(function (a, b) { return b.date.localeCompare(a.date); });
   $("count").textContent = "(" + list.length + "/" + nodes.length + ")";
   var h = "";
@@ -201,7 +232,16 @@ function render() {
       + "</span></div>";
     h += '<div class="node-body">';
     if (n.url) h += '<div class="row"><a href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(n.url) + "</a></div>";
-    h += '<div class="sec-title" style="font-size:13px">NOTES</div>'
+    h += '<div class="sec-title" style="font-size:13px">BIB</div>'
+      + '<div class="row"><input type="text" data-f="authors" placeholder="authors" value="' + esc(n.authors || "") + '">'
+      + '<span style="flex:0 0 80px"><input type="text" data-f="year" placeholder="year" value="' + esc(n.year || "") + '"></span>'
+      + '<input type="text" data-f="venue" placeholder="venue / journal" value="' + esc(n.venue || "") + '"></div>'
+      + '<div class="row"><input type="text" data-f="thesis" placeholder="one line: what does it claim?" value="' + esc(n.thesis || "") + '"></div>'
+      + '<div class="sec-title" style="font-size:13px">QUOTES</div>'
+      + '<textarea data-f="quotes" style="min-height:56px">' + esc(n.quotes || "") + "</textarea>"
+      + '<div class="sec-title" style="font-size:13px">CRITIQUE / MY TAKE</div>'
+      + '<textarea data-f="critique" style="min-height:56px">' + esc(n.critique || "") + "</textarea>"
+      + '<div class="sec-title" style="font-size:13px">NOTES</div>'
       + '<textarea data-f="notes">' + esc(n.notes || "") + "</textarea>";
     h += '<div class="sec-title" style="font-size:13px;margin-top:8px">LINKS (yours)</div><div data-f="links">';
     (n.links || []).forEach(function (l, i) {
@@ -219,7 +259,7 @@ function render() {
     h += '</select></div><div class="row"><input type="text" data-f="linkwhy" placeholder="why this link? (your call)">'
       + '<span class="fixed"><button data-act="link">[+] link</button></span></div>';
     h += '<div class="row" style="margin-top:8px">'
-      + '<span class="fixed"><button data-act="save-notes">[ok] save notes</button></span>'
+      + '<span class="fixed"><button data-act="save-notes">[ok] save</button></span>'
       + '<span class="fixed"><button data-act="toggle-status">[' + (n.status === "partial" ? "done?" : "partial?") + "]</button></span>"
       + '<span class="fixed"><button data-act="export">[>] .md</button></span>'
       + '<span class="fixed"><button data-act="del" class="danger">[x] delete</button></span>'
@@ -241,7 +281,10 @@ function render() {
         var act = b.getAttribute("data-act");
         var n = byId(id);
         if (act === "save-notes") {
-          n.notes = el.querySelector('[data-f="notes"]').value;
+          ["notes", "authors", "year", "venue", "thesis", "quotes", "critique"].forEach(function (f) {
+            var inp = el.querySelector('[data-f="' + f + '"]');
+            if (inp) n[f] = inp.value;
+          });
           save(); setStatus("saved locally"); render();
         } else if (act === "toggle-status") {
           n.status = n.status === "partial" ? "done" : "partial";
@@ -270,13 +313,41 @@ function render() {
   });
 }
 
+/* ---------- categories manager ---------- */
+function syncCatSelect() {
+  var fc = $("f-cat");
+  var cur = fc.value;
+  fc.innerHTML = "";
+  cats.forEach(function (c) {
+    var o = document.createElement("option");
+    o.value = c[0]; o.textContent = c[1];
+    fc.appendChild(o);
+  });
+  if (cats.some(function (c) { return c[0] === cur; })) fc.value = cur;
+}
+function renderCatManage() {
+  var h = "";
+  cats.forEach(function (c) {
+    h += '<span class="cat">' + esc(c[1])
+      + ' <button data-cdel="' + esc(c[0]) + '" style="border:none;padding:0 4px" title="remove">[x]</button></span>';
+  });
+  $("cats-manage").innerHTML = h || '<span class="small">none</span>';
+  $("cats-manage").querySelectorAll("[data-cdel]").forEach(function (b) {
+    b.onclick = function () {
+      var slug = b.getAttribute("data-cdel");
+      cats = cats.filter(function (c) { return c[0] !== slug; });
+      if (!cats.length) cats = CATS.slice();
+      if (filterCat === slug) filterCat = "all";
+      saveCats(); syncCatSelect(); render();
+    };
+  });
+}
+
 /* ---------- init ---------- */
 function init() {
   load();
+  syncCatSelect();
   var fc = $("f-cat"), fk = $("f-kind");
-  CATS.forEach(function (c) {
-    var o = document.createElement("option"); o.value = c[0]; o.textContent = c[1]; fc.appendChild(o);
-  });
   KINDS.forEach(function (k) {
     var o = document.createElement("option"); o.value = k; o.textContent = k; fk.appendChild(o);
   });
@@ -294,6 +365,16 @@ function init() {
   };
   $("q").oninput = function () { query = $("q").value; render(); };
   $("clearq").onclick = function () { $("q").value = ""; query = ""; render(); };
+  $("add-cat").onclick = function () {
+    var name = $("new-cat").value.trim();
+    if (!name) return;
+    var slug = slugify(name);
+    if (cats.some(function (c) { return c[0] === slug; })) { setStatus("category exists: " + slug); return; }
+    cats.push([slug, name]);
+    saveCats(); syncCatSelect();
+    $("new-cat").value = "";
+    render();
+  };
   $("exp-all").onclick = function () {
     download("reading-nodes.md", nodes.map(nodeMd).join("\n---\n\n"));
   };
