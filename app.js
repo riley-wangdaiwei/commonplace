@@ -57,6 +57,7 @@ function seed() {
     id: "n-mcp-48h-20261004",
     type: "reading",
     title: "MCP servers had a rough 48 hours: 4 unauthenticated CVEs",
+    label: "MCP auth CVEs",
     category: "privacy",
     kind: "digest",
     url: "https://dev.to/kielltampubolon/mcp-servers-had-a-rough-48-hours-4-unauthenticated-cves-4oco",
@@ -89,7 +90,7 @@ function catColor(c) {
 }
 function graphData(list) {
   var arr = list || nodes;
-  var ns = arr.map(function (n) { return { id: n.id, title: n.title, cat: n.category }; });
+  var ns = arr.map(function (n) { return { id: n.id, title: n.title, label: n.label || "", cat: n.category, type: n.type }; });
   var idx = {};
   ns.forEach(function (x, i) { idx[x.id] = i; });
   var edges = [];
@@ -177,26 +178,29 @@ function layout(g, W, H) {
     });
   }
 }
+function gname(id) {
+  var n = byId(id);
+  if (!n) return id;
+  return n.label || n.title;
+}
 function renderGraphText(g) {
   var h = '<div class="sec-title" style="font-size:13px">EDGES -- Forman-Ricci curvature</div>';
   if (!g.edges.length) h += '<div class="small">no edges yet. add links inside a node.</div>';
   g.edges.slice().sort(function (a, b) { return a.curv - b.curv; }).forEach(function (e) {
-    var A = byId(e.a), B = byId(e.b);
     var tag = e.curv < 0 ? "bridge" : (e.curv > 0 ? "cluster" : "flat");
-    h += '<div class="small">' + esc(A ? A.title : e.a) + " -- " + esc(B ? B.title : e.b)
+    h += '<div class="small">' + esc(gname(e.a)) + " -- " + esc(gname(e.b))
       + " : " + (e.curv > 0 ? "+" : "") + e.curv + " [" + tag + (e.kind === "suggested" ? ", suggested" : "") + "]</div>";
   });
   h += '<div class="sec-title" style="font-size:13px;margin-top:8px">LINK PREDICTION -- not linked yet</div>';
   if (!g.cands.length) h += '<div class="small">no candidates (needs shared neighbors).</div>';
   g.cands.forEach(function (c, i) {
-    var A = byId(c.a), B = byId(c.b);
-    h += '<div class="small">' + esc(A ? A.title : c.a) + " .. " + esc(B ? B.title : c.b)
+    h += '<div class="small">' + esc(gname(c.a)) + " .. " + esc(gname(c.b))
       + " : common neighbors " + c.cn + ", jaccard " + c.jac.toFixed(2)
       + ' <button data-cand="' + i + '">[suggest]</button></div>';
   });
   h += '<div class="sec-title" style="font-size:13px;margin-top:8px">NODES</div>';
   g.ns.forEach(function (x) {
-    h += '<div class="small">' + esc(x.title) + " : degree " + (g.deg[x.id] || 0)
+    h += '<div class="small">' + esc(x.label || x.title) + " : degree " + (g.deg[x.id] || 0)
       + ", curvature " + (g.ncurv[x.id] >= 0 ? "+" : "") + g.ncurv[x.id].toFixed(1) + "</div>";
   });
   h += '<div class="small" style="margin-top:8px">curvature = 4 - deg(u) - deg(v) + 3*triangles.'
@@ -249,7 +253,7 @@ function drawGraph() {
       ctx.fillStyle = catColor(x.cat); ctx.fill();
       ctx.strokeStyle = "#111"; ctx.lineWidth = 1.5; ctx.stroke();
       ctx.fillStyle = "#111";
-      var label = x.title.length > 20 ? x.title.slice(0, 19) + "…" : x.title;
+      var label = x.label || (x.title.length > 20 ? x.title.slice(0, 19) + "…" : x.title);
       ctx.fillText(label, x.x + r + 4, x.y + 4);
     });
   }
@@ -344,6 +348,7 @@ function gistPull() {
 function nodeMd(n) {
   var L = ["---", "id: " + n.id, "type: " + n.type,
     "title: " + JSON.stringify(n.title), "category: " + n.category,
+    "label: " + JSON.stringify(n.label || ""),
     "kind: " + n.kind, "url: " + (n.url || ""), "date: " + n.date,
     "status: " + n.status,
     "authors: " + JSON.stringify(n.authors || ""),
@@ -409,7 +414,8 @@ function render() {
   list.forEach(function (n) {
     var open = openId === n.id ? " open" : "";
     h += '<div class="node' + open + '" data-id="' + esc(n.id) + '">';
-    h += '<div class="node-head"><span class="t">' + esc(n.title) + '</span> '
+    h += '<div class="node-head"><span class="t">' + esc(n.label || n.title) + '</span> '
+      + '<span class="tag">' + esc(n.type || "reading") + '</span> '
       + '<span class="tag">' + esc(n.status) + "</span><br>"
       + '<span class="meta">' + esc(catLabel(n.category)) + " | " + esc(n.kind) + " | " + esc(n.date)
       + (n.links && n.links.length ? " | links:" + n.links.length : "")
@@ -417,6 +423,12 @@ function render() {
     h += '<div class="node-body">';
     if (n.url) h += '<div class="row"><a href="' + esc(n.url) + '" target="_blank" rel="noopener">' + esc(n.url) + "</a></div>";
     h += '<div class="row"><input type="text" data-f="url" placeholder="url" value="' + esc(n.url || "") + '"></div>';
+    h += '<div class="row"><input type="text" data-f="label" placeholder="SHORT LABEL -- this is what the graph shows" value="' + esc(n.label || "") + '">'
+      + '<span style="flex:0 0 120px"><select data-f="type">'
+      + '<option value="reading"' + (n.type === "reading" ? " selected" : "") + '>reading</option>'
+      + '<option value="idea"' + (n.type === "idea" ? " selected" : "") + '>idea</option>'
+      + '<option value="concept"' + (n.type === "concept" ? " selected" : "") + '>concept</option>'
+      + "</select></span></div>";
     h += '<div class="sec-title" style="font-size:13px">BIB</div>'
       + '<div class="row"><input type="text" data-f="authors" placeholder="authors" value="' + esc(n.authors || "") + '">'
       + '<span style="flex:0 0 80px"><input type="text" data-f="year" placeholder="year" value="' + esc(n.year || "") + '"></span>'
@@ -477,7 +489,7 @@ function render() {
         var act = b.getAttribute("data-act");
         var n = byId(id);
         if (act === "save-notes") {
-          ["notes", "url", "authors", "year", "venue", "thesis", "quotes", "critique"].forEach(function (f) {
+          ["notes", "url", "label", "type", "authors", "year", "venue", "thesis", "quotes", "critique"].forEach(function (f) {
             var inp = el.querySelector('[data-f="' + f + '"]');
             if (inp) n[f] = inp.value;
           });
@@ -552,6 +564,7 @@ function renderCatManage() {
 function normalizeNode(n) {
   return {
     id: n.id || uid(), type: n.type || "reading", title: n.title || "(untitled)",
+    label: n.label || "",
     category: n.category || "general", kind: n.kind || "other", url: n.url || "",
     date: n.date || today(), status: n.status || "partial",
     authors: n.authors || "", year: n.year || "", venue: n.venue || "",
@@ -593,10 +606,10 @@ function init() {
     var t = $("f-title").value.trim();
     if (!t) { $("f-title").focus(); return; }
     nodes.unshift({
-      id: uid(), type: "reading", title: t,
+      id: uid(), type: $("f-type").value, title: t,
       category: fc.value, kind: fk.value,
       url: $("f-url").value.trim(), date: today(),
-      status: "partial", notes: "", links: [], suggested_links: []
+      status: "partial", label: "", notes: "", links: [], suggested_links: []
     });
     $("f-title").value = ""; $("f-url").value = "";
     save(); render();
