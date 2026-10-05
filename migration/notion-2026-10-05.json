@@ -17,7 +17,8 @@
    "critique": "",
    "notes": "- strategies: zealot, concensus-maker, gridlocker, chartist\n- preferences: e.g. gridlock-preferring Chartists affiliated with party i: π(i,j,i) > π(i,i,j) > π(i,i,i) > π(i,j,j) for i≠j\n- Erdos Renyi\n- n-person BOS (PDF was attached in Notion)\n- Schelling Hockey Helmets: https://simson.net/ref/1972/Schelling_Hockey_Helmets.pdf",
    "links": [],
-   "suggested_links": []
+   "suggested_links": [],
+   "label": "Strategic Voting"
   },
   {
    "id": "n-notion-minority-game",
@@ -36,7 +37,8 @@
    "critique": "",
    "notes": "- (PDF was attached in Notion: 0402651.pdf)\n- Stable states, Lyapunov function: https://en.wikipedia.org/wiki/Lyapunov_function\n- bounded rationality: https://en.wikipedia.org/wiki/Bounded_rationality\n- deductive reasoning (commonly applied) doesn't account that people actually look at feedback, learn, and act next\n- analytical techniques work in MG partly due to fixed rules; real life has no fixed strategy spaces\n- the virtue of MG: minority rule + agents' heterogeneity",
    "links": [],
-   "suggested_links": []
+   "suggested_links": [],
+   "label": "Minority Game"
   },
   {
    "id": "n-notion-vitalik-privacy",
@@ -61,7 +63,8 @@
      "reason": "both about privacy: Vitalik argues why privacy matters; the MCP digest shows what happens when auth is missing",
      "status": "pending"
     }
-   ]
+   ],
+   "label": "Why I support Privacy"
   },
   {
    "id": "n-notion-trust-at-scale",
@@ -86,7 +89,8 @@
      "reason": "both web3/Vitalik-adjacent: economic limits of trust vs normative case for privacy",
      "status": "pending"
     }
-   ]
+   ],
+   "label": "Trust at Scale"
   },
   {
    "id": "n-notion-lemons",
@@ -105,7 +109,8 @@
    "critique": "",
    "notes": "(empty in Notion - to read)",
    "links": [],
-   "suggested_links": []
+   "suggested_links": [],
+   "label": "Lemons"
   },
   {
    "id": "n-notion-shame-pride",
@@ -124,7 +129,8 @@
    "critique": "",
    "notes": "(empty in Notion - to read)",
    "links": [],
-   "suggested_links": []
+   "suggested_links": [],
+   "label": "Shame and Pride"
   },
   {
    "id": "n-notion-future-imperfect-5",
@@ -143,7 +149,8 @@
    "critique": "",
    "notes": "- collision of technology and law\n- collision of the physical and the virtual\n- collision of data leaking and data processing",
    "links": [],
-   "suggested_links": []
+   "suggested_links": [],
+   "label": "Future Imperfect Ch.5"
   },
   {
    "id": "n-notion-antitrust-fb",
@@ -168,7 +175,8 @@
      "reason": "both connect data to market power: antitrust abuse via data collection vs transaction-cost view of data transfer/liability",
      "status": "pending"
     }
-   ]
+   ],
+   "label": "German Facebook Case"
   },
   {
    "id": "n-notion-firm-boundaries",
@@ -187,7 +195,8 @@
    "critique": "",
    "notes": "- integration tendency: risk & insurance, moral hazard model -> data liability & security and privacy (her highlight)\n- model for forward integration (diagrams were attached in Notion)\n- Transaction-Cost Model of firm boundaries -> data transfer (her highlight)\n- 'real-world contracts are normally incomplete; specific investments generate quasi rents...' -> the inefficiency of cookies (her highlight)\n- Spillovers Within a Chain -> data leaking (her highlight)",
    "links": [],
-   "suggested_links": []
+   "suggested_links": [],
+   "label": "Firm boundaries"
   },
   {
    "id": "n-notion-vpa",
@@ -206,7 +215,8 @@
    "critique": "",
    "notes": "(migrated from Notion Trading section - to read)",
    "links": [],
-   "suggested_links": []
+   "suggested_links": [],
+   "label": "Volume Price Analysis"
   },
   {
    "id": "n-notion-sdg-metadata",
@@ -225,7 +235,8 @@
    "critique": "",
    "notes": "(stub from Notion Gambia Data Gap Research - empty)",
    "links": [],
-   "suggested_links": []
+   "suggested_links": [],
+   "label": "SDG metadata"
   },
   {
    "id": "n-notion-wdr2026-annex",
@@ -244,7 +255,8 @@
    "critique": "",
    "notes": "(stub from Notion Gambia Data Gap Research - empty)",
    "links": [],
-   "suggested_links": []
+   "suggested_links": [],
+   "label": "WDR 2026 annex"
   }
  ],
  "categories": [
