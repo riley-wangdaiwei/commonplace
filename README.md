@@ -1,10 +1,15 @@
-# reading-notes
+# commonplace
 
-Riles's personal reading-notes dataset. Seed of an LLM wiki.
+Riles's commonplace book. Seed of an LLM wiki.
 
 - `index.html` + `app.js` -- the capture tool (ASCII aesthetic, no design)
 - data: browser localStorage + gist backup (`reading-nodes.json`)
 - export: one `.md` per node with frontmatter (future wiki seed)
+
+Node types: reading / idea / question / concept. A node is anything worth
+pointing at; links (human-only, each with a `why`) are the connective tissue.
+
+Live at https://riley-wangdaiwei.github.io/commonplace/
 
 ## node schema
 
