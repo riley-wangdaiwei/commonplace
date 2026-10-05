@@ -427,6 +427,7 @@ function render() {
       + '<span style="flex:0 0 120px"><select data-f="type">'
       + '<option value="reading"' + (n.type === "reading" ? " selected" : "") + '>reading</option>'
       + '<option value="idea"' + (n.type === "idea" ? " selected" : "") + '>idea</option>'
+      + '<option value="question"' + (n.type === "question" ? " selected" : "") + '>question</option>'
       + '<option value="concept"' + (n.type === "concept" ? " selected" : "") + '>concept</option>'
       + "</select></span></div>";
     h += '<div class="sec-title" style="font-size:13px">BIB</div>'
