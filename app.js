@@ -80,6 +80,180 @@ function seed() {
   }];
 }
 
+/* ---------- graph: metrics + force layout + link prediction ---------- */
+var PALETTE = ["#ffffff", "#e8e8e8", "#d4d4d4", "#c0c0c0", "#a8a8a8", "#909090", "#787878"];
+function catColor(c) {
+  var h = 0;
+  for (var i = 0; i < c.length; i++) h = (h * 31 + c.charCodeAt(i)) >>> 0;
+  return PALETTE[h % PALETTE.length];
+}
+function graphData() {
+  var ns = nodes.map(function (n) { return { id: n.id, title: n.title, cat: n.category }; });
+  var idx = {};
+  ns.forEach(function (x, i) { idx[x.id] = i; });
+  var edges = [];
+  function addEdge(a, b, kind, why) {
+    if (idx[b] == null || idx[a] >= idx[b]) return;
+    for (var i = 0; i < edges.length; i++)
+      if (edges[i].a === a && edges[i].b === b) return;
+    edges.push({ a: a, b: b, kind: kind, why: why || "" });
+  }
+  nodes.forEach(function (n) {
+    (n.links || []).forEach(function (l) { addEdge(n.id, l.to, "mine", l.why); });
+    (n.suggested_links || []).forEach(function (l) {
+      if (l.status === "pending") addEdge(n.id, l.to, "suggested", l.reason);
+    });
+  });
+  return { ns: ns, idx: idx, edges: edges };
+}
+function graphMetrics(g) {
+  var deg = {}, adj = {};
+  g.ns.forEach(function (x) { deg[x.id] = 0; adj[x.id] = {}; });
+  g.edges.forEach(function (e) { deg[e.a]++; deg[e.b]++; adj[e.a][e.b] = 1; adj[e.b][e.a] = 1; });
+  function tris(a, b) { var t = 0; for (var k in adj[a]) if (adj[b][k]) t++; return t; }
+  // Forman-Ricci (augmented, unweighted): 4 - deg(u) - deg(v) + 3*triangles
+  g.edges.forEach(function (e) { e.tri = tris(e.a, e.b); e.curv = 4 - deg[e.a] - deg[e.b] + 3 * e.tri; });
+  var nc = {};
+  g.ns.forEach(function (x) { nc[x.id] = []; });
+  g.edges.forEach(function (e) { nc[e.a].push(e.curv); nc[e.b].push(e.curv); });
+  g.ncurv = {};
+  g.ns.forEach(function (x) {
+    var a = nc[x.id];
+    g.ncurv[x.id] = a.length ? a.reduce(function (s, v) { return s + v; }, 0) / a.length : 0;
+  });
+  g.deg = deg;
+  var cands = [];
+  for (var i = 0; i < g.ns.length; i++) for (var j = i + 1; j < g.ns.length; j++) {
+    var u = g.ns[i].id, v = g.ns[j].id;
+    if (adj[u][v]) continue;
+    var cn = 0;
+    for (var k in adj[u]) if (adj[v][k]) cn++;
+    if (cn > 0) {
+      var union = deg[u] + deg[v] - cn;
+      cands.push({ a: u, b: v, cn: cn, jac: union ? cn / union : 0 });
+    }
+  }
+  cands.sort(function (x, y) { return y.cn - x.cn || y.jac - x.jac; });
+  g.cands = cands.slice(0, 8);
+  return g;
+}
+function layout(g, W, H) {
+  var n = g.ns.length;
+  if (!n) return;
+  g.ns.forEach(function (x) {
+    x.x = W / 2 + (Math.random() - 0.5) * W * 0.5;
+    x.y = H / 2 + (Math.random() - 0.5) * H * 0.5;
+    x.vx = 0; x.vy = 0;
+  });
+  var L = 130;
+  for (var t = 0; t < 220; t++) {
+    var i, j, a, b, dx, dy, d, f;
+    for (i = 0; i < n; i++) {
+      a = g.ns[i];
+      for (j = i + 1; j < n; j++) {
+        b = g.ns[j];
+        dx = a.x - b.x; dy = a.y - b.y;
+        d = Math.sqrt(dx * dx + dy * dy) + 0.1;
+        f = 3500 / (d * d);
+        dx /= d; dy /= d;
+        a.vx += dx * f; a.vy += dy * f; b.vx -= dx * f; b.vy -= dy * f;
+      }
+      a.vx += (W / 2 - a.x) * 0.004; a.vy += (H / 2 - a.y) * 0.004;
+    }
+    g.edges.forEach(function (e) {
+      a = g.ns[g.idx[e.a]]; b = g.ns[g.idx[e.b]];
+      dx = b.x - a.x; dy = b.y - a.y;
+      d = Math.sqrt(dx * dx + dy * dy) + 0.1;
+      f = (d - L) * 0.02;
+      dx /= d; dy /= d;
+      a.vx += dx * f; a.vy += dy * f; b.vx -= dx * f; b.vy -= dy * f;
+    });
+    g.ns.forEach(function (x) {
+      x.vx *= 0.85; x.vy *= 0.85;
+      x.x = Math.max(34, Math.min(W - 34, x.x + x.vx));
+      x.y = Math.max(22, Math.min(H - 22, x.y + x.vy));
+    });
+  }
+}
+function renderGraphText(g) {
+  var h = '<div class="sec-title" style="font-size:13px">EDGES -- Forman-Ricci curvature</div>';
+  if (!g.edges.length) h += '<div class="small">no edges yet. add links inside a node.</div>';
+  g.edges.slice().sort(function (a, b) { return a.curv - b.curv; }).forEach(function (e) {
+    var A = byId(e.a), B = byId(e.b);
+    var tag = e.curv < 0 ? "bridge" : (e.curv > 0 ? "cluster" : "flat");
+    h += '<div class="small">' + esc(A ? A.title : e.a) + " -- " + esc(B ? B.title : e.b)
+      + " : " + (e.curv > 0 ? "+" : "") + e.curv + " [" + tag + (e.kind === "suggested" ? ", suggested" : "") + "]</div>";
+  });
+  h += '<div class="sec-title" style="font-size:13px;margin-top:8px">LINK PREDICTION -- not linked yet</div>';
+  if (!g.cands.length) h += '<div class="small">no candidates (needs shared neighbors).</div>';
+  g.cands.forEach(function (c, i) {
+    var A = byId(c.a), B = byId(c.b);
+    h += '<div class="small">' + esc(A ? A.title : c.a) + " .. " + esc(B ? B.title : c.b)
+      + " : common neighbors " + c.cn + ", jaccard " + c.jac.toFixed(2)
+      + ' <button data-cand="' + i + '">[suggest]</button></div>';
+  });
+  h += '<div class="sec-title" style="font-size:13px;margin-top:8px">NODES</div>';
+  g.ns.forEach(function (x) {
+    h += '<div class="small">' + esc(x.title) + " : degree " + (g.deg[x.id] || 0)
+      + ", curvature " + (g.ncurv[x.id] >= 0 ? "+" : "") + g.ncurv[x.id].toFixed(1) + "</div>";
+  });
+  h += '<div class="small" style="margin-top:8px">curvature = 4 - deg(u) - deg(v) + 3*triangles.'
+    + ' negative = bridge between neighborhoods; positive = inside a dense cluster.</div>';
+  $("graph-text").innerHTML = h;
+  $("graph-text").querySelectorAll("[data-cand]").forEach(function (btn) {
+    btn.onclick = function () {
+      var c = g.cands[+btn.getAttribute("data-cand")];
+      var n = byId(c.a);
+      n.suggested_links = n.suggested_links || [];
+      var dup = n.suggested_links.some(function (s) { return s.to === c.b && s.status === "pending"; });
+      if (dup) return;
+      n.suggested_links.push({
+        to: c.b, status: "pending",
+        reason: "link prediction: " + c.cn + " common neighbor(s), jaccard " + c.jac.toFixed(2)
+      });
+      save(); render();
+    };
+  });
+}
+function drawGraph() {
+  var cv = $("graph-canvas");
+  if (!cv) return;
+  var W = cv.parentElement.clientWidth || 800, H = 420;
+  cv.width = W; cv.height = H;
+  cv.style.width = W + "px"; cv.style.height = H + "px";
+  var ctx = cv.getContext("2d");
+  ctx.font = "11px monospace";
+  var g = graphMetrics(graphData());
+  if (!g.ns.length) {
+    ctx.fillStyle = "#111"; ctx.fillText("no nodes", 20, 30);
+  } else {
+    layout(g, W, H);
+    g.edges.forEach(function (e) {
+      var a = g.ns[g.idx[e.a]], b = g.ns[g.idx[e.b]];
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+      if (e.kind === "suggested") { ctx.setLineDash([4, 4]); ctx.strokeStyle = "#999"; ctx.lineWidth = 1; }
+      else {
+        ctx.setLineDash([]);
+        ctx.strokeStyle = e.curv < 0 ? "#a00" : "#111";
+        ctx.lineWidth = e.curv < 0 ? 2.5 : 1.5;
+      }
+      ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = "#555";
+      ctx.fillText((e.curv > 0 ? "+" : "") + e.curv, (a.x + b.x) / 2 + 4, (a.y + b.y) / 2 - 4);
+    });
+    g.ns.forEach(function (x) {
+      var r = 9 + Math.min(12, (g.deg[x.id] || 0) * 3);
+      ctx.beginPath(); ctx.arc(x.x, x.y, r, 0, 7);
+      ctx.fillStyle = catColor(x.cat); ctx.fill();
+      ctx.strokeStyle = "#111"; ctx.lineWidth = 1.5; ctx.stroke();
+      ctx.fillStyle = "#111";
+      var label = x.title.length > 20 ? x.title.slice(0, 19) + "…" : x.title;
+      ctx.fillText(label, x.x + r + 4, x.y + 4);
+    });
+  }
+  renderGraphText(g);
+}
+
 /* ---------- storage ---------- */
 function load() {
   try {
@@ -181,6 +355,14 @@ function nodeMd(n) {
       if (l.why) L.push("    why: " + JSON.stringify(l.why));
     });
   } else L.push("links: []");
+  var sl = (n.suggested_links || []).filter(function (s) { return s.status === "pending"; });
+  if (sl.length) {
+    L.push("suggested_links:");
+    sl.forEach(function (s) {
+      L.push("  - to: " + s.to);
+      if (s.reason) L.push("    reason: " + JSON.stringify(s.reason));
+    });
+  }
   L.push("---", "");
   if (n.quotes) L.push("## quotes", "", n.quotes, "");
   if (n.critique) L.push("## critique", "", n.critique, "");
@@ -251,6 +433,17 @@ function render() {
         + '<button data-act="unlink" data-i="' + i + '">[x]</button></div>';
     });
     h += "</div>";
+    h += '<div class="sec-title" style="font-size:13px;margin-top:8px">SUGGESTED (metrics / llm -- your call)</div>';
+    var pend = (n.suggested_links || []).map(function (s, i) { s._i = i; return s; })
+      .filter(function (s) { return s.status === "pending"; });
+    if (!pend.length) h += '<div class="small">none pending.</div>';
+    pend.forEach(function (s) {
+      var t = byId(s.to);
+      h += '<div class="link" style="color:#555">? ' + esc(t ? t.title : s.to)
+        + ' <span class="why">' + esc(s.reason || "") + "</span> "
+        + '<button data-act="approve-s" data-i="' + s._i + '">[approve]</button>'
+        + ' <button data-act="reject-s" data-i="' + s._i + '">[x]</button></div>';
+    });
     h += '<div class="row" style="margin-top:6px"><select data-f="linkto"><option value="">-- link to --</option>';
     nodes.forEach(function (m) {
       if (m.id === n.id) return;
@@ -298,6 +491,15 @@ function render() {
           save(); render();
         } else if (act === "unlink") {
           n.links.splice(parseInt(b.getAttribute("data-i"), 10), 1);
+          save(); render();
+        } else if (act === "approve-s") {
+          var s = n.suggested_links[parseInt(b.getAttribute("data-i"), 10)];
+          s.status = "approved";
+          n.links = n.links || [];
+          n.links.push({ to: s.to, why: s.reason || "" });
+          save(); render();
+        } else if (act === "reject-s") {
+          n.suggested_links[parseInt(b.getAttribute("data-i"), 10)].status = "rejected";
           save(); render();
         } else if (act === "export") {
           download(n.id + ".md", nodeMd(n));
@@ -407,5 +609,6 @@ function init() {
   };
   render();
   gistPull();
+  if ($("draw")) $("draw").onclick = drawGraph;
 }
 document.addEventListener("DOMContentLoaded", init);
