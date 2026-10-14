@@ -1,0 +1,20 @@
+[
+  {
+    "from": "n-notion-antitrust-fb",
+    "to": "n-notion-firm-boundaries",
+    "reason": "both connect data to market power: antitrust abuse via data collection vs transaction-cost view of data transfer/liability",
+    "status": "pending"
+  },
+  {
+    "from": "n-notion-trust-at-scale",
+    "to": "n-notion-vitalik-privacy",
+    "reason": "both web3/Vitalik-adjacent: economic limits of trust vs normative case for privacy",
+    "status": "approved"
+  },
+  {
+    "from": "n-notion-vitalik-privacy",
+    "to": "n-mcp-48h-20261004",
+    "reason": "both about privacy: Vitalik argues why privacy matters; the MCP digest shows what happens when auth is missing",
+    "status": "pending"
+  }
+]
