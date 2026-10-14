@@ -4,8 +4,8 @@ title: 看上去很美
 type: book
 category: book
 author: 王朔
-date: 
-status: todo
+date:
+status: done
 kind: book
 url: ""
 ---
