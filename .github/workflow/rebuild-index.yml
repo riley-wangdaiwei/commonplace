@@ -1,0 +1,28 @@
+name: rebuild index
+# When Riles edits/deletes wiki/*.md in Obsidian and pushes (or build.py
+# changes), regenerate index.json + inbox.json so the reader stays in sync.
+# md files are the truth; this needs no human in the loop.
+on:
+  push:
+    branches: [main]
+    paths: ["wiki/**", "build.py"]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python3 build.py
+      - run: |
+          git config user.name "commonplace-index-bot"
+          git config user.email "commonplace-index-bot@users.noreply.github.com"
+          git pull --rebase
+          git add index.json inbox.json
+          git diff --cached --quiet || git commit -m "rebuild index.json + inbox.json"
+          git push
