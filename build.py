@@ -274,6 +274,9 @@ def main():
                     seen_inbox.add((it["from"], it["to"]))
                     new_items += 1
             body = cleaned
+        # Hub pages are indexes: their [[links]] are navigation-only and must
+        # NOT become graph edges (categorical membership is not a semantic link).
+        page_links = [] if fm.get("type") == "hub" else extract_links(body)
         pages.append(
             {
                 "id": pid,
@@ -289,7 +292,7 @@ def main():
                 "venue": fm.get("venue", ""),
                 "url": fm.get("url", ""),
                 "body": body,
-                "links": extract_links(body),
+                "links": page_links,
             }
         )
     save_inbox(inbox)
