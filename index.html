@@ -58,15 +58,11 @@
   .tab.on { background: #111; color: #fff; }
 </style>
 <style>
-  /* v1 additions: search-first layout + sidebar inbox + cite box */
+  /* v1 additions: search-first layout + cite box + graph */
   body { max-width: 150ch; }
-  .layout { display: flex; gap: 16px; align-items: flex-start; }
-  .main { flex: 1 1 auto; min-width: 0; }
-  .side { flex: 0 0 32ch; border: 1px solid #111; padding: 8px; position: sticky; top: 8px; }
-  @media (max-width: 100ch) {
-    .layout { flex-direction: column; }
-    .side { flex: 1 1 auto; width: 100%; position: static; }
-  }
+  .bigsearch input[type=text] { padding: 10px 12px; font-size: 16px; }
+  .navlink { margin-left: 10px; }
+  h1 a { text-decoration: none; }
   .result { border: 1px solid #111; margin-bottom: 8px; }
   .result-head { padding: 6px 8px; cursor: pointer; }
   .result-head:hover { background: #f2f2f2; }
@@ -86,52 +82,13 @@
 </head>
 <body>
 
-<h1>commonplace</h1>
+<h1><a href="#/">commonplace</a></h1>
 <div class="sub">a commonplace book -- questions, readings, ideas; capture now, link later, compile eventually</div>
-
-<div class="layout">
-<div class="main">
-
-<div id="view-home">
-<div class="bar"></div>
-<div class="sec-title">FIND</div>
-<div class="row">
-  <input type="text" id="q" placeholder="search title / notes / author ..." autocomplete="off">
-  <span class="fixed"><button id="clearq">[x] clear</button></span>
+<div class="topbar" id="nav">
+  <span class="tab" data-go="#/todo">[to do]</span><span class="tab" data-go="#/graph">[graph]</span><span class="tab" data-go="#/pages">[pages]</span><span class="small navlink"><a href="#/inbox" id="inbox-link">[inbox]</a></span>
 </div>
-<div id="results"></div>
 
-<div class="bar"></div>
-<div class="sec-title">TO READ <span id="toread-n"></span></div>
-<div id="toread"></div>
-
-<div class="bar"></div>
-<div class="sec-title">NODES <span id="count"></span></div>
-<div id="list"></div>
-
-<div class="bar"></div>
-<div class="sec-title">GRAPH</div>
-<div class="row">
-  <span class="fixed"><button id="draw">[.] draw graph</button></span>
-  <span class="small">nodes sized by degree. dashed edge = suggested link.</span>
-</div>
-<canvas id="graph-canvas"></canvas>
-</div><!-- /view-home -->
-
-<div id="view-page" style="display:none">
-<div class="row"><span class="fixed"><button id="back">[&lt;] back</button></span></div>
-<div id="page"></div>
-</div><!-- /view-page -->
-
-</div><!-- /main -->
-
-<aside class="side">
-<div class="sec-title">INBOX <span id="inbox-n"></span></div>
-<div class="small" style="margin-bottom:8px">suggested links from the llm. accept copies the link -- paste it into the page in Obsidian.</div>
-<div id="inbox"></div>
-</aside>
-
-</div><!-- /layout -->
+<div id="view"></div>
 
 <div class="bar"></div>
 <div class="small">nodes are yours. links are yours. the llm only suggests -- never writes links.</div>
@@ -140,6 +97,6 @@
 <script src="vendor/d3-dispatch.min.js"></script>
 <script src="vendor/d3-timer.min.js"></script>
 <script src="vendor/d3-force.min.js"></script>
-<script src="app.js?v=1"></script>
+<script src="app.js?v=3"></script>
 </body>
 </html>

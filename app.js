@@ -129,7 +129,13 @@ function copyText(text, btn) {
   }
 }
 
-/* ---------- lists ---------- */
+/* ---------- shared ---------- */
+function setView(html) {
+  const v = document.getElementById("view");
+  v.innerHTML = html;
+  return v;
+}
+
 function rowHtml(p, snippet) {
   return `<div class="result"><div class="result-head" data-open="${p.id}">
 <span class="t" style="font-weight:bold">&gt; ${esc(p.title)}</span>
@@ -151,6 +157,19 @@ function visiblePages() {
   return PAGES.filter((p) => p.type !== "template");
 }
 
+function bindOpen(root) {
+  root.querySelectorAll("[data-open]").forEach((el) => {
+    el.addEventListener("click", () => {
+      location.hash = "#/" + el.getAttribute("data-open");
+    });
+  });
+}
+
+function backlinks(id) {
+  return visiblePages().filter((p) => p.id !== id && p.links.includes(id));
+}
+
+/* ---------- home: search bar + results ---------- */
 function doSearch() {
   const q = document.getElementById("q").value.trim().toLowerCase();
   const pages = visiblePages();
@@ -167,74 +186,91 @@ function doSearch() {
   bindOpen(document.getElementById("results"));
 }
 
-function renderToread() {
-  const items = visiblePages()
-    .filter((p) => p.status === "todo" && p.type !== "hub")
-    .sort((a, b) => (a.type < b.type ? -1 : a.type > b.type ? 1 : a.title.localeCompare(b.title)));
-  document.getElementById("toread-n").textContent = `(${items.length})`;
-  document.getElementById("toread").innerHTML = items.length
-    ? items.map((p) => rowHtml(p, "")).join("")
-    : `<div class="small">queue is empty. enjoy.</div>`;
-  bindOpen(document.getElementById("toread"));
-}
-
-function renderNodes() {
-  const items = visiblePages().sort((a, b) => a.title.localeCompare(b.title));
-  document.getElementById("count").textContent = `(${items.length})`;
-  document.getElementById("list").innerHTML = items
-    .map(
-      (p) => `<div class="link"><a href="#/${p.id}">${esc(p.title)}</a> <span class="meta">${esc([p.type, p.category].filter(Boolean).join(" · "))}</span></div>`
-    )
-    .join("");
-}
-
-function bindOpen(root) {
-  root.querySelectorAll("[data-open]").forEach((el) => {
-    el.addEventListener("click", () => {
-      location.hash = "#/" + el.getAttribute("data-open");
-    });
-  });
-}
-
-/* ---------- page view ---------- */
-function backlinks(id) {
-  return visiblePages().filter((p) => p.id !== id && p.links.includes(id));
-}
-
-function showPage(id) {
-  const p = BY_ID[id];
-  document.getElementById("view-home").style.display = "none";
-  const vp = document.getElementById("view-page");
-  vp.style.display = "";
-  if (!p) {
-    document.getElementById("page").innerHTML = `<div class="pg-title">not found</div><div class="small">no page with id "${esc(id)}".</div>`;
-    document.title = "commonplace";
-    return;
-  }
-  document.title = `commonplace — ${p.title}`;
-  const bl = backlinks(id);
-  document.getElementById("page").innerHTML = `
-<div class="pg-title">${esc(p.title)}</div>
-<div class="pg-meta">${esc(metaLine(p))}</div>
-<div class="bar"></div>
-${renderBody(p.body)}
-${p.type === "reading" ? citeBox(p) : ""}
-<div class="bar"></div>
-<div class="sec-title">BACKLINKS <span>(${bl.length})</span></div>
-${bl.length ? bl.map((b) => `<div class="link"><a href="#/${b.id}">${esc(b.title)}</a></div>`).join("") : `<div class="small">nothing links here yet.</div>`}
-`;
-  vp.querySelectorAll("[data-copy]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const src = document.getElementById(btn.getAttribute("data-copy"));
-      copyText(src.textContent, btn);
-    });
-  });
-}
-
-function showHome() {
+function viewHome() {
   document.title = "commonplace";
-  document.getElementById("view-page").style.display = "none";
-  document.getElementById("view-home").style.display = "";
+  const v = setView(`
+<div class="bar"></div>
+<div class="sec-title">FIND</div>
+<div class="row bigsearch">
+  <input type="text" id="q" placeholder="search title / notes / author ..." autocomplete="off">
+  <span class="fixed"><button id="clearq">[x] clear</button></span>
+</div>
+<div id="results"></div>`);
+  const q = v.querySelector("#q");
+  q.addEventListener("input", doSearch);
+  v.querySelector("#clearq").addEventListener("click", () => {
+    q.value = "";
+    doSearch();
+    q.focus();
+  });
+  doSearch();
+  q.focus();
+}
+
+/* ---------- to do: grouped by type ---------- */
+function viewTodo() {
+  document.title = "commonplace — to do";
+  const groups = [
+    ["film", "FILMS"],
+    ["reading", "READINGS"],
+    ["book", "BOOKS"],
+  ];
+  let html = "";
+  for (const [type, label] of groups) {
+    const items = visiblePages()
+      .filter((p) => p.type === type && p.status === "todo")
+      .sort((a, b) => a.title.localeCompare(b.title));
+    html += `<div class="bar"></div><div class="sec-title">${label} <span>(${items.length})</span></div>`;
+    html += items.length
+      ? items.map((p) => rowHtml(p, "")).join("")
+      : `<div class="small">nothing here.</div>`;
+  }
+  const v = setView(html);
+  bindOpen(v);
+}
+
+/* ---------- all pages: compact list grouped by type ---------- */
+const TYPE_GROUPS = [
+  ["reading", "READINGS"],
+  ["film", "FILMS"],
+  ["book", "BOOKS"],
+  ["hub", "HUBS"],
+];
+
+function viewPages() {
+  document.title = "commonplace — pages";
+  const v = setView(`
+<div class="bar"></div>
+<div class="sec-title">ALL PAGES</div>
+<div class="row"><input type="text" id="fq" placeholder="filter ..." autocomplete="off"></div>
+<div id="pagelist"></div>`);
+  const linkRow = (p, metaBits) =>
+    `<div class="link"><a href="#/${p.id}">${esc(p.title)}</a> <span class="meta">${esc(metaBits.filter(Boolean).join(" · "))}</span></div>`;
+  const render = () => {
+    const q = v.querySelector("#fq").value.trim().toLowerCase();
+    const box = v.querySelector("#pagelist");
+    if (!q) {
+      let html = "";
+      for (const [type, label] of TYPE_GROUPS) {
+        const items = visiblePages()
+          .filter((p) => p.type === type)
+          .sort((a, b) => a.title.localeCompare(b.title));
+        if (!items.length) continue;
+        html += `<div class="bar"></div><div class="sec-title">${label} <span>(${items.length})</span></div>`;
+        html += items.map((p) => linkRow(p, [p.category, p.status])).join("");
+      }
+      box.innerHTML = html;
+    } else {
+      const hits = visiblePages()
+        .filter((p) => (p.title + " " + p.id).toLowerCase().includes(q))
+        .sort((a, b) => a.title.localeCompare(b.title));
+      box.innerHTML =
+        `<div class="small" style="margin:8px 0">${hits.length} match${hits.length === 1 ? "" : "es"}</div>` +
+        hits.map((p) => linkRow(p, [p.type, p.category])).join("");
+    }
+  };
+  v.querySelector("#fq").addEventListener("input", render);
+  render();
 }
 
 /* ---------- graph (d3-force, canvas) ---------- */
@@ -390,6 +426,16 @@ function drawGraph() {
   canvas.onmouseleave = () => { hoverNode = null; endDrag(null); paint(); };
 }
 
+function viewGraph() {
+  document.title = "commonplace — graph";
+  setView(`
+<div class="bar"></div>
+<div class="sec-title">GRAPH</div>
+<div class="small" style="margin-bottom:8px">nodes sized by degree. dashed edge = suggested link. click a node to open it, drag to move.</div>
+<canvas id="graph-canvas"></canvas>`);
+  drawGraph();
+}
+
 /* ---------- inbox ---------- */
 function inboxKey(s) {
   return s.from + "→" + s.to;
@@ -407,12 +453,26 @@ function setDecision(key, val) {
   localStorage.setItem(LS_KEY, JSON.stringify(d));
 }
 
-function renderInbox(note) {
+function pendingInbox() {
   const decisions = getDecisions();
-  const pending = INBOX.filter((s) => s.status === "pending" && !decisions[inboxKey(s)]);
-  const accepted = INBOX.filter(
+  return INBOX.filter((s) => s.status === "pending" && !decisions[inboxKey(s)]);
+}
+function acceptedInbox() {
+  const decisions = getDecisions();
+  return INBOX.filter(
     (s) => s.status === "approved" || decisions[inboxKey(s)] === "accepted"
   );
+}
+
+function updateInboxCount() {
+  const n = pendingInbox().length;
+  const el = document.getElementById("inbox-link");
+  if (el) el.textContent = `[inbox${n ? " (" + n + ")" : ""}]`;
+}
+
+function renderInbox(note) {
+  const pending = pendingInbox();
+  const accepted = acceptedInbox();
   document.getElementById("inbox-n").textContent = `(${pending.length})`;
   const item = (s) => {
     const from = BY_ID[s.from];
@@ -433,7 +493,7 @@ ${s.reason ? `<div class="small">${esc(s.reason)}</div>` : ""}
     html += accepted
       .map(
         (s) => `<div class="inbox-item"><div class="small">${esc(s.from)} -&gt; ${esc(s.to)}</div>
-<div class="row" style="margin-top:4px"><span class="fixed"><button data-copyd="${esc(s.to)}">[copy] [[${esc(s.to)}]]</button></span></div></div>`
+<div class="row" style="margin-top:4px"><span class="fixed"><button data-copyb="${esc(s.to)}">[copy] [[${esc(s.to)}]]</button></span></div></div>`
       )
       .join("");
   }
@@ -460,15 +520,78 @@ ${s.reason ? `<div class="small">${esc(s.reason)}</div>` : ""}
   box.querySelectorAll("[data-copyb]").forEach((b) =>
     b.addEventListener("click", () => copyText(`[[${b.getAttribute("data-copyb")}]]`, b))
   );
+  updateInboxCount();
+}
+
+function viewInbox() {
+  document.title = "commonplace — inbox";
+  setView(`
+<div class="bar"></div>
+<div class="sec-title">INBOX <span id="inbox-n"></span></div>
+<div class="small" style="margin-bottom:8px">suggested links from the llm. accept copies the link -- paste it into the page in Obsidian.</div>
+<div id="inbox"></div>`);
+  renderInbox();
+}
+
+/* ---------- page view ---------- */
+function viewPage(id) {
+  const p = BY_ID[id];
+  document.title = p ? `commonplace — ${p.title}` : "commonplace";
+  if (!p) {
+    setView(`<div class="bar"></div><div class="pg-title">not found</div><div class="small">no page with id "${esc(id)}".</div>`);
+    return;
+  }
+  const bl = backlinks(id);
+  const v = setView(`
+<div class="row"><span class="fixed"><button id="back">[&lt;] back</button></span></div>
+<div class="pg-title">${esc(p.title)}</div>
+<div class="pg-meta">${esc(metaLine(p))}</div>
+<div class="bar"></div>
+${renderBody(p.body)}
+${p.type === "reading" ? citeBox(p) : ""}
+<div class="bar"></div>
+<div class="sec-title">BACKLINKS <span>(${bl.length})</span></div>
+${bl.length ? bl.map((b) => `<div class="link"><a href="#/${b.id}">${esc(b.title)}</a></div>`).join("") : `<div class="small">nothing links here yet.</div>`}
+`);
+  v.querySelector("#back").addEventListener("click", () => {
+    location.hash = "#/";
+  });
+  v.querySelectorAll("[data-copy]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const src = document.getElementById(btn.getAttribute("data-copy"));
+      copyText(src.textContent, btn);
+    });
+  });
+}
+
+/* ---------- router ---------- */
+function route() {
+  if (sim) {
+    sim.stop();
+    sim = null;
+  }
+  const h = location.hash || "#/";
+  document.querySelectorAll("#nav .tab").forEach((t) =>
+    t.classList.toggle("on", t.getAttribute("data-go") === h)
+  );
+  let pageId = null;
+  if (h.startsWith("#/") && h.length > 2) {
+    try {
+      pageId = decodeURIComponent(h.slice(2));
+    } catch (e) {
+      pageId = null;
+    }
+  }
+  if (h === "#/todo") viewTodo();
+  else if (h === "#/graph") viewGraph();
+  else if (h === "#/pages") viewPages();
+  else if (h === "#/inbox") viewInbox();
+  else if (pageId && BY_ID[pageId]) viewPage(pageId);
+  else viewHome();
+  window.scrollTo(0, 0);
 }
 
 /* ---------- boot ---------- */
-function route() {
-  const h = location.hash;
-  if (h.startsWith("#/") && h.length > 2) showPage(decodeURIComponent(h.slice(2)));
-  else showHome();
-}
-
 async function init() {
   const [idx, inbox] = await Promise.all([
     fetch("index.json").then((r) => r.json()),
@@ -479,22 +602,13 @@ async function init() {
   for (const p of PAGES) BY_ID[p.id] = p;
   INBOX = inbox;
 
-  document.getElementById("q").addEventListener("input", doSearch);
-  document.getElementById("clearq").addEventListener("click", () => {
-    document.getElementById("q").value = "";
-    doSearch();
-    document.getElementById("q").focus();
-  });
-  document.getElementById("draw").addEventListener("click", drawGraph);
-  document.getElementById("back").addEventListener("click", () => {
-    location.hash = "";
-  });
+  document.querySelectorAll("#nav .tab").forEach((t) =>
+    t.addEventListener("click", () => {
+      location.hash = t.getAttribute("data-go");
+    })
+  );
 
-  doSearch();
-  renderToread();
-  renderNodes();
-  renderInbox();
-  drawGraph();
+  updateInboxCount();
   window.addEventListener("hashchange", route);
   route();
 }
