@@ -1,7 +1,7 @@
 {
  "meta": {
   "generator": "build.py",
-  "pages": 73
+  "pages": 69
  },
  "pages": [
   {
@@ -156,7 +156,7 @@
    "category": "book",
    "kind": "book",
    "date": "",
-   "status": "todo",
+   "status": "done",
    "authors": "王朔",
    "year": "",
    "venue": "",
@@ -981,38 +981,6 @@
    "links": []
   },
   {
-   "id": "n-toread-一个陌生女人的来信",
-   "title": "一个陌生女人的来信",
-   "label": "",
-   "type": "book",
-   "category": "book",
-   "kind": "book",
-   "date": "",
-   "status": "todo",
-   "authors": "",
-   "year": "",
-   "venue": "",
-   "url": "",
-   "body": "# 一个陌生女人的来信\n\n\nNotion Current list / Literature\n",
-   "links": []
-  },
-  {
-   "id": "n-toread-卡尔维诺",
-   "title": "卡尔维诺",
-   "label": "",
-   "type": "book",
-   "category": "book",
-   "kind": "book",
-   "date": "",
-   "status": "todo",
-   "authors": "",
-   "year": "",
-   "venue": "",
-   "url": "",
-   "body": "# 卡尔维诺\n\n\nNotion Current list / Novels\n",
-   "links": []
-  },
-  {
    "id": "n-toread-压缩现代性",
    "title": "压缩现代性",
    "label": "",
@@ -1042,22 +1010,6 @@
    "venue": "",
    "url": "",
    "body": "# 古拉格群岛\n\n\nNotion Current list / Novels\n",
-   "links": []
-  },
-  {
-   "id": "n-toread-台北人",
-   "title": "台北人",
-   "label": "",
-   "type": "book",
-   "category": "book",
-   "kind": "book",
-   "date": "",
-   "status": "todo",
-   "authors": "",
-   "year": "",
-   "venue": "",
-   "url": "",
-   "body": "# 台北人\n\n\nNotion Current list / Novels\n",
    "links": []
   },
   {
@@ -1106,22 +1058,6 @@
    "venue": "",
    "url": "",
    "body": "# 汉书\n\n\nNotion Current list / Other\n",
-   "links": []
-  },
-  {
-   "id": "n-toread-爱你就像爱生命",
-   "title": "爱你就像爱生命",
-   "label": "",
-   "type": "book",
-   "category": "book",
-   "kind": "book",
-   "date": "",
-   "status": "todo",
-   "authors": "",
-   "year": "",
-   "venue": "",
-   "url": "",
-   "body": "# 爱你就像爱生命\n\n\nNotion Current list / Other\n",
    "links": []
   },
   {
