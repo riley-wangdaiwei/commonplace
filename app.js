@@ -322,32 +322,38 @@ function drawGraph() {
   const { nodes, edges } = graphData();
   const dpr = window.devicePixelRatio || 1;
   const w = canvas.clientWidth || 600;
-  const h = 420;
+  const h = 460;
   canvas.width = w * dpr;
   canvas.height = h * dpr;
   canvas.style.height = h + "px";
+  canvas.style.touchAction = "none";
   const ctx = canvas.getContext("2d");
-  ctx.scale(dpr, dpr);
 
+  const view = { k: 1, x: 0, y: 0 };
   let hoverNode = null;
-  let dragNode = null;
+  let nodeDrag = null;
+  let panDrag = null;
+  let userMoved = false;
 
   if (sim) sim.stop();
   // seed positions on a circle so first paint is stable
   nodes.forEach((n, i) => {
     const a = (i / Math.max(1, nodes.length)) * Math.PI * 2;
-    n.x = w / 2 + Math.cos(a) * Math.min(w, h) * 0.35;
-    n.y = h / 2 + Math.sin(a) * Math.min(w, h) * 0.35;
+    n.x = w / 2 + Math.cos(a) * Math.min(w, h) * 0.3;
+    n.y = h / 2 + Math.sin(a) * Math.min(w, h) * 0.3;
   });
   sim = d3
     .forceSimulation(nodes)
-    .force("link", d3.forceLink(edges).id((d) => d.id).distance(70))
-    .force("charge", d3.forceManyBody().strength(-140))
+    .force("link", d3.forceLink(edges).id((d) => d.id).distance(60))
+    .force("charge", d3.forceManyBody().strength(-70))
     .force("center", d3.forceCenter(w / 2, h / 2))
-    .force("collide", d3.forceCollide().radius((d) => d.r + 16));
+    .force("collide", d3.forceCollide().radius((d) => d.r + 12));
 
   function paint() {
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
+    ctx.translate(view.x, view.y);
+    ctx.scale(view.k, view.k);
     for (const e of edges) {
       ctx.beginPath();
       ctx.strokeStyle = "#999";
@@ -360,7 +366,7 @@ function drawGraph() {
     ctx.font = "11px ui-monospace, Menlo, monospace";
     for (const n of nodes) {
       ctx.beginPath();
-      ctx.fillStyle = n === hoverNode || n === dragNode ? "#111" : "#fff";
+      ctx.fillStyle = n === hoverNode || (nodeDrag && nodeDrag.n === n) ? "#111" : "#fff";
       ctx.strokeStyle = "#111";
       ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
       ctx.fill();
@@ -370,60 +376,110 @@ function drawGraph() {
       ctx.fillText(label, n.x + n.r + 4, n.y + 4);
     }
   }
-  sim.on("tick", paint);
 
+  function fitView() {
+    if (!nodes.length) return;
+    let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    for (const n of nodes) {
+      x0 = Math.min(x0, n.x - n.r - 40); y0 = Math.min(y0, n.y - n.r - 14);
+      x1 = Math.max(x1, n.x + n.r + 40); y1 = Math.max(y1, n.y + n.r + 14);
+    }
+    const bw = Math.max(1, x1 - x0), bh = Math.max(1, y1 - y0);
+    const k = Math.min(2, Math.max(0.15, Math.min((w - 40) / bw, (h - 40) / bh)));
+    view.k = k;
+    view.x = (w - bw * k) / 2 - x0 * k;
+    view.y = (h - bh * k) / 2 - y0 * k;
+    paint();
+  }
+
+  let ticks = 0, fitted = false;
+  sim.on("tick", () => {
+    paint();
+    if (!fitted && !userMoved && ++ticks > 120) { fitted = true; fitView(); }
+  });
   paint();
+
   const pos = (ev) => {
     const r = canvas.getBoundingClientRect();
     return { x: ev.clientX - r.left, y: ev.clientY - r.top };
   };
+  const toWorld = (x, y) => ({ x: (x - view.x) / view.k, y: (y - view.y) / view.k });
   const hit = (x, y) => {
-    let best = null;
-    let bestD = 1e9;
+    const p = toWorld(x, y);
+    let best = null, bestD = 1e9;
     for (const n of nodes) {
-      const d = Math.hypot(n.x - x, n.y - y);
-      if (d < n.r + 6 && d < bestD) { best = n; bestD = d; }
+      const d = Math.hypot(n.x - p.x, n.y - p.y);
+      if (d < n.r + 8 / view.k && d < bestD) { best = n; bestD = d; }
     }
     return best;
   };
-  canvas.onmousemove = (ev) => {
+
+  canvas.onpointerdown = (ev) => {
     const { x, y } = pos(ev);
-    if (dragNode) {
-      dragNode.fx = x;
-      dragNode.fy = y;
+    const n = hit(x, y);
+    try { canvas.setPointerCapture(ev.pointerId); } catch (e) {}
+    if (n) {
+      const p = toWorld(x, y);
+      nodeDrag = { n, sx: x, sy: y, moved: false };
+      n.fx = p.x; n.fy = p.y;
+      sim.alphaTarget(0.3).restart();
+    } else {
+      panDrag = { sx: x, sy: y, vx: view.x, vy: view.y, moved: false };
+    }
+    canvas.style.cursor = "grabbing";
+  };
+  canvas.onpointermove = (ev) => {
+    const { x, y } = pos(ev);
+    if (nodeDrag) {
+      if (Math.hypot(x - nodeDrag.sx, y - nodeDrag.sy) > 4) nodeDrag.moved = true;
+      const p = toWorld(x, y);
+      nodeDrag.n.fx = p.x; nodeDrag.n.fy = p.y;
+      return;
+    }
+    if (panDrag) {
+      if (Math.hypot(x - panDrag.sx, y - panDrag.sy) > 4) {
+        panDrag.moved = true;
+        userMoved = true;
+      }
+      view.x = panDrag.vx + (x - panDrag.sx);
+      view.y = panDrag.vy + (y - panDrag.sy);
+      paint();
       return;
     }
     hoverNode = hit(x, y);
     canvas.style.cursor = hoverNode ? "pointer" : "grab";
     paint();
   };
-  canvas.onmousedown = (ev) => {
-    const { x, y } = pos(ev);
-    const n = hit(x, y);
-    if (n) {
-      dragNode = n;
-      n.fx = x; n.fy = y;
-      sim.alphaTarget(0.3).restart();
-      canvas.style.cursor = "grabbing";
-    }
-  };
-  const endDrag = (ev) => {
-    if (dragNode) {
-      const moved = ev && Math.hypot(dragNode.fx - pos(ev).x, dragNode.fy - pos(ev).y) > 4;
-      dragNode.fx = null;
-      dragNode.fy = null;
-      dragNode = null;
+  const endPointer = (ev) => {
+    if (nodeDrag) {
+      const n = nodeDrag.n, moved = nodeDrag.moved;
+      n.fx = null; n.fy = null;
+      nodeDrag = null;
       sim.alphaTarget(0);
       if (ev && !moved) {
-        // treat as click
         const { x, y } = pos(ev);
-        const n = hit(x, y);
-        if (n) location.hash = "#/" + n.id;
+        if (hit(x, y) === n) location.hash = "#/" + n.id;
       }
     }
+    panDrag = null;
+    canvas.style.cursor = "grab";
   };
-  canvas.onmouseup = endDrag;
-  canvas.onmouseleave = () => { hoverNode = null; endDrag(null); paint(); };
+  canvas.onpointerup = endPointer;
+  canvas.onpointercancel = () => endPointer(null);
+  canvas.onpointerleave = () => { hoverNode = null; if (!nodeDrag && !panDrag) paint(); };
+  canvas.addEventListener("wheel", (ev) => {
+    ev.preventDefault();
+    userMoved = true;
+    const { x, y } = pos(ev);
+    const k2 = Math.min(4, Math.max(0.15, view.k * Math.exp(-ev.deltaY * 0.0015)));
+    view.x = x - (x - view.x) * (k2 / view.k);
+    view.y = y - (y - view.y) * (k2 / view.k);
+    view.k = k2;
+    paint();
+  }, { passive: false });
+
+  const resetBtn = document.getElementById("graph-reset");
+  if (resetBtn) resetBtn.onclick = () => { fitted = true; fitView(); };
 }
 
 function viewGraph() {
@@ -431,7 +487,7 @@ function viewGraph() {
   setView(`
 <div class="bar"></div>
 <div class="sec-title">GRAPH</div>
-<div class="small" style="margin-bottom:8px">nodes sized by degree. dashed edge = suggested link. click a node to open it, drag to move.</div>
+<div class="small" style="margin-bottom:8px">nodes sized by degree. dashed edge = suggested link. scroll to zoom, drag background to pan, drag node to move, click node to open. <button id="graph-reset">[.] reset view</button></div>
 <canvas id="graph-canvas"></canvas>`);
   drawGraph();
 }
