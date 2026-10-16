@@ -225,7 +225,7 @@ def report_skipped_nodes(existing_ids):
 
 def main():
     md_files = sorted(
-        f for f in os.listdir(WIKI) if f.endswith(".md") and f != "template-reading.md"
+        f for f in os.listdir(WIKI) if f.endswith(".md") and not f.startswith("template-")
     )
     # template is excluded from listings but still validated
     all_files = sorted(f for f in os.listdir(WIKI) if f.endswith(".md"))
@@ -252,7 +252,7 @@ def main():
     new_items = 0
     pages = []
     md_files = sorted(
-        f for f in os.listdir(WIKI) if f.endswith(".md") and f != "template-reading.md"
+        f for f in os.listdir(WIKI) if f.endswith(".md") and not f.startswith("template-")
     )
     for fn in md_files:
         path = os.path.join(WIKI, fn)
