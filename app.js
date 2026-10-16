@@ -211,6 +211,7 @@ function viewHome() {
 function viewTodo() {
   document.title = "commonplace — to do";
   const groups = [
+    ["question", "QUESTIONS"],
     ["film", "FILMS"],
     ["reading", "READINGS"],
     ["book", "BOOKS"],
@@ -231,6 +232,7 @@ function viewTodo() {
 
 /* ---------- all pages: compact list grouped by type ---------- */
 const TYPE_GROUPS = [
+  ["question", "QUESTIONS"],
   ["reading", "READINGS"],
   ["film", "FILMS"],
   ["book", "BOOKS"],
