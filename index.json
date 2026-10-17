@@ -1,7 +1,7 @@
 {
  "meta": {
   "generator": "build.py",
-  "pages": 72
+  "pages": 73
  },
  "pages": [
   {
@@ -516,6 +516,22 @@
    "venue": "",
    "url": "",
    "body": "# The Killing of a Chinese Bookie\n\n- Director: ⁦⁨John Cassavetes\n- Watched: 2026-01-25 (一人)\n",
+   "links": []
+  },
+  {
+   "id": "n-film-the-master",
+   "title": "The Master",
+   "label": "",
+   "type": "film",
+   "category": "film",
+   "kind": "",
+   "date": "",
+   "status": "",
+   "authors": "Paul Thomas Anderson",
+   "year": "",
+   "venue": "",
+   "url": "",
+   "body": "# The Master\n\n- Director: Paul Thomas Anderson\n",
    "links": []
   },
   {
