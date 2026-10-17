@@ -14,9 +14,6 @@ label: ""
 ## Why it matters
 * Clarifying how technological protocols, encryption, and spatial arrangements mediate human connection, autonomy, and privacy in modern economic and social interactions.
 
-## Next
-* Analyze Vitalik's essay "Why I support privacy" and map out the private/public games framework.
-
 ## Notes
 - Vitalik: "Why I support privacy"
 	  - privacy = not having to weigh too much other's behaviors before making decisions
