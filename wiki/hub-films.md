@@ -35,3 +35,4 @@ category: film
 - [[n-film-夏夜的微笑]] — 夏夜的微笑 (Ingmar Bergman)
 - [[n-film-奥德赛]] — 奥德赛 (诺兰)
 - [[n-film-机器人总动员]] — 机器人总动员
+- [[n-film-the-master]] — The Master (Paul Thomas Anderson)
