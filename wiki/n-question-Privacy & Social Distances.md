@@ -39,7 +39,7 @@ label: Privacy & Social Distances
 - Transparency or Privacy?
 - Foucault: Theory of body or psychiatry
 - bomb & crypto - hacking in Iran. (June 20, 2025)
-- [p.45 (To be linked)] p.45: Is Privacy a Norm? (The Privacy Paradox)
+- [[p.45 (To be linked)]] p.45: Is Privacy a Norm? (The Privacy Paradox)
 - Informal Insurance in Africa
 	  - livestock insurance
 	  - the impact of mobile money
@@ -47,4 +47,4 @@ label: Privacy & Social Distances
     - Altman (1975) treats privacy as a dynamic, dialectic regulation process
     - A Superendowment Effect (Winegar, 2019) valuations of data privacy is expressive.
     - Gertrude Stein: "There is no there there."
-- [p.56 (To be continued)] 
+- [[p.56 (To be continued)]] 
