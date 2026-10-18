@@ -4,7 +4,7 @@ title: ""
 type: question
 category: ""
 date: ""
-label: ""
+label: 二元思维与多元的本质区别
 ---
 
 ## Question

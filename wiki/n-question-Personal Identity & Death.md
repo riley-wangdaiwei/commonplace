@@ -4,7 +4,7 @@ title: ""
 type: question
 category: ""
 date: ""
-label: ""
+label: Personal Identity & Death
 ---
 
 ## Question

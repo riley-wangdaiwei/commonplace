@@ -4,7 +4,7 @@ title: ""
 type: question
 category: ""
 date: ""
-label: ""
+label: 通感与隐喻
 ---
 ## Question
 What are the core distinctions btw metaphors that arise from the neurological condition of synaesthesia and conventional metaphors that do not?

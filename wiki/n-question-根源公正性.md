@@ -4,7 +4,7 @@ title: ""
 type: question
 category: ""
 date: ""
-label: ""
+label: 根源公正性
 ---
 ## Question
 如果现在推崇竞争，怎样保证考虑历史公平性？

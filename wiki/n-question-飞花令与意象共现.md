@@ -4,7 +4,7 @@ title: ""
 type: question
 category: ""
 date: ""
-label: ""
+label: 飞花令与意象共现
 ---
 ## Question
 Does 飞花令 indicate lexical / metaphoric richness or poorness in ancient chinese poems?

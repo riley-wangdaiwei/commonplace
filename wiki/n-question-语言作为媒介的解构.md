@@ -5,7 +5,7 @@ type: question
 category: ""
 date: ""
 status: done
-label: ""
+label: 语言作为媒介的解构
 ---
 ## Question
 We need language to think and share. But language reduces, distorts, and simplifies? (How language builds and breaks reality)
