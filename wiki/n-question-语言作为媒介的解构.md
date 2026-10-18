@@ -1,5 +1,5 @@
 ---
-id: template-question
+id: n-question-语言作为媒介的解构
 title: ""
 type: question
 category: ""

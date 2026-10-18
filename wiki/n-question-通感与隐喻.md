@@ -1,5 +1,5 @@
 ---
-id: template-question
+id: n-question-通感与隐喻
 title: ""
 type: question
 category: ""

@@ -1,5 +1,5 @@
 ---
-id: template-question
+id: n-question-飞花令与意象共现
 title: ""
 type: question
 category: ""

@@ -1,5 +1,5 @@
 ---
-id: template-question
+id: n-question-二元思维与多元的本质区别
 title: ""
 type: question
 category: ""

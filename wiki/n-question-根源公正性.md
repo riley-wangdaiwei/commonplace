@@ -1,5 +1,5 @@
 ---
-id: template-question
+id: n-question-根源公正性
 title: ""
 type: question
 category: ""
