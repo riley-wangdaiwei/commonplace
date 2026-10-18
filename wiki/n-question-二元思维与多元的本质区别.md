@@ -21,7 +21,7 @@ If binary thinking tends to oversimplify complex things (realities), are ternary
 - Binary hypothesis testing
 - Entropy
 - Bayesian
-  - 沙子堆垛定义问题
+	- 沙子堆垛定义问题
 - Multi-valued Logic (MVL)
   - Non-Aristotelian
   - semantics /
@@ -31,4 +31,6 @@ If binary thinking tends to oversimplify complex things (realities), are ternary
   - Polarization & Ideological Alignment
     - Banisch, S & Olbrich, E.
 - Weird "Induction Principle" sitting in the Qn of "How many genders should we have"?
-  - Once 3 is ok, 4 is ok, then 5 is ok, ...
+	- Once 3 is ok, 4 is ok, then 5 is ok, ...
+- S 在和我谈到 consensual Non-Monogamy。我说 my take this might be hard for most couples / human beings: A one-to-one relationship is a simple contract in human society, while a one-to-many relationship creates non-linearly growing trust issues and contractual complexities. - 这个 "non-linearly-growing" 是个假设。有没有可能也被验证呢
+	- In PoliSci, minimal winning coalitions principle (MWC)
