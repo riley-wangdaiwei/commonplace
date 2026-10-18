@@ -1,7 +1,7 @@
 {
  "meta": {
   "generator": "build.py",
-  "pages": 78
+  "pages": 79
  },
  "pages": [
   {
@@ -130,6 +130,22 @@
    "venue": "",
    "url": "",
    "body": "# The Remains of the Day\n\n- Author: Kazuo Ishiguro\n",
+   "links": []
+  },
+  {
+   "id": "n-book-中国历代政治得失",
+   "title": "中国历代政治得失",
+   "label": "",
+   "type": "book",
+   "category": "book",
+   "kind": "book",
+   "date": "2026-10-18",
+   "status": "done",
+   "authors": "钱穆",
+   "year": "",
+   "venue": "",
+   "url": "",
+   "body": "",
    "links": []
   },
   {
