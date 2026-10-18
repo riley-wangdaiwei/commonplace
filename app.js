@@ -59,7 +59,7 @@ function renderBody(body) {
   const fences = [];
   const nofence = lines
     .join("\n")
-    .replace(/^```([^\n]*)\n([\s\S]*?)^```[ \t]*$/gm, (m, lang, code) => {
+    .replace(/^[ \t]*(?:[-*+]|\d+\.)?[ \t]*```([^\n]*)\n([\s\S]*?)^[ \t]*```[ \t]*$/gm, (m, lang, code) => {
       fences.push({
         lang: lang.trim().toLowerCase(),
         code: code.replace(/\n+$/, ""),
