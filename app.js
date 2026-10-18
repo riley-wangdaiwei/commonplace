@@ -18,7 +18,7 @@ function esc(s) {
 
 const WIKILINK_RE = /\[\[(?:([^\]|]+)\|)?([^\]]+)\]\]/g;
 
-function renderInline(text) {
+function renderInlineCore(text) {
   let h = esc(text);
   h = h.replace(WIKILINK_RE, (m, alias, target) => {
     target = target.trim();
@@ -28,28 +28,67 @@ function renderInline(text) {
     }
     return `<span class="unresolved" title="page not found">${label}</span>`;
   });
+  h = h.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, label, url) => {
+    return `<a href="${esc(url)}">${label}</a>`;
+  });
   h = h.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
   h = h.replace(/\*([^*]+)\*/g, "<em>$1</em>");
   return h;
+}
+
+function renderInline(text) {
+  // protect `code spans` from inline formatting, then restore them
+  const codes = [];
+  const html = String(text)
+    .split(/(`[^`\n]+`)/g)
+    .map((part, i) =>
+      i % 2 === 1
+        ? `\uE000${codes.push(part.slice(1, -1)) - 1}\uE000`
+        : renderInlineCore(part)
+    )
+    .join("");
+  return html.replace(/\uE000(\d+)\uE000/g, (m, n) => `<code>${esc(codes[+n])}</code>`);
 }
 
 function renderBody(body) {
   // drop the leading "# Title" -- the title is shown separately
   const lines = body.split("\n");
   if (lines.length && lines[0].startsWith("# ")) lines.shift();
+  // pull out fenced code blocks first (they may contain blank lines);
+  // each fence becomes its own block so it never merges into a paragraph
+  const fences = [];
+  const nofence = lines
+    .join("\n")
+    .replace(/^```([^\n]*)\n([\s\S]*?)^```[ \t]*$/gm, (m, lang, code) => {
+      fences.push({
+        lang: lang.trim().toLowerCase(),
+        code: code.replace(/\n+$/, ""),
+      });
+      return `\n\n\uE200${fences.length - 1}\uE200\n\n`;
+    });
   const blocks = [];
   let cur = [];
   const flush = () => {
     if (cur.length) blocks.push(cur.join("\n"));
     cur = [];
   };
-  for (const ln of lines) {
+  for (const ln of nofence.split("\n")) {
     if (/^\s*$/.test(ln)) flush();
     else cur.push(ln);
   }
   flush();
   const out = [];
   for (const b of blocks) {
+    const fencem = b.match(/^\uE200(\d+)\uE200$/);
+    if (fencem) {
+      const f = fences[+fencem[1]];
+      if (f.lang === "mermaid") {
+        out.push(`<div class="mermaid">${esc(f.code)}</div>`);
+      } else {
+        out.push(`<pre><code>${esc(f.code)}</code></pre>`);
+      }
+      continue;
+    }
     const bl = b.split("\n");
     if (/^#{1,3} /.test(bl[0])) {
       out.push(`<div class="md-h">${renderInline(bl[0].replace(/^#{1,3} /, ""))}</div>`);
@@ -59,6 +98,10 @@ function renderBody(body) {
       out.push(`<div class="bar"></div>`);
     } else if (bl.every((l) => /^\s*-\s+/.test(l))) {
       out.push("<ul>" + bl.map((l) => `<li>${renderInline(l.replace(/^\s*-\s+/, ""))}</li>`).join("") + "</ul>");
+    } else if (bl.every((l) => /^\s*\d+\.\s+/.test(l))) {
+      out.push("<ol>" + bl.map((l) => `<li>${renderInline(l.replace(/^\s*\d+\.\s+/, ""))}</li>`).join("") + "</ol>");
+    } else if (bl.every((l) => /^\s*>\s?/.test(l))) {
+      out.push(`<blockquote>${bl.map((l) => renderInline(l.replace(/^\s*>\s?/, ""))).join("<br>")}</blockquote>`);
     } else {
       out.push(`<p>${renderInline(bl.join(" "))}</p>`);
     }
@@ -620,6 +663,12 @@ ${bl.length ? bl.map((b) => `<div class="link"><a href="#/${b.id}">${esc(b.title
       copyText(src.textContent, btn);
     });
   });
+  if (window.mermaid) {
+    try {
+      const r = mermaid.run({ querySelector: "#view .mermaid" });
+      if (r && r.catch) r.catch(() => {});
+    } catch (e) {}
+  }
 }
 
 /* ---------- router ---------- */
@@ -668,6 +717,11 @@ async function init() {
 
   updateInboxCount();
   window.addEventListener("hashchange", route);
+  if (window.mermaid) {
+    try {
+      mermaid.initialize({ startOnLoad: false, theme: "neutral" });
+    } catch (e) {}
+  }
   route();
 }
 
