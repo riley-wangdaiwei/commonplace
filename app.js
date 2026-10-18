@@ -50,29 +50,14 @@ function renderInline(text) {
   return html.replace(/\uE000(\d+)\uE000/g, (m, n) => `<code>${esc(codes[+n])}</code>`);
 }
 
-function renderBody(body) {
-  // drop the leading "# Title" -- the title is shown separately
-  const lines = body.split("\n");
-  if (lines.length && lines[0].startsWith("# ")) lines.shift();
-  // pull out fenced code blocks first (they may contain blank lines);
-  // each fence becomes its own block so it never merges into a paragraph
-  const fences = [];
-  const nofence = lines
-    .join("\n")
-    .replace(/^[ \t]*(?:[-*+]|\d+\.)?[ \t]*```([^\n]*)\n([\s\S]*?)^[ \t]*```[ \t]*$/gm, (m, lang, code) => {
-      fences.push({
-        lang: lang.trim().toLowerCase(),
-        code: code.replace(/\n+$/, ""),
-      });
-      return `\n\n\uE200${fences.length - 1}\uE200\n\n`;
-    });
+function renderBlocks(text) {
   const blocks = [];
   let cur = [];
   const flush = () => {
     if (cur.length) blocks.push(cur.join("\n"));
     cur = [];
   };
-  for (const ln of nofence.split("\n")) {
+  for (const ln of text.split("\n")) {
     if (/^\s*$/.test(ln)) flush();
     else cur.push(ln);
   }
@@ -81,7 +66,7 @@ function renderBody(body) {
   for (const b of blocks) {
     const fencem = b.match(/^\uE200(\d+)\uE200$/);
     if (fencem) {
-      const f = fences[+fencem[1]];
+      const f = FENCES[+fencem[1]];
       if (f.lang === "mermaid") {
         out.push(`<div class="mermaid">${esc(f.code)}</div>`);
       } else {
@@ -93,11 +78,11 @@ function renderBody(body) {
     if (/^#{1,3} /.test(bl[0])) {
       out.push(`<div class="md-h">${renderInline(bl[0].replace(/^#{1,3} /, ""))}</div>`);
       const rest = bl.slice(1).join("\n").trim();
-      if (rest) out.push(`<p>${renderInline(rest)}</p>`);
+      if (rest) out.push(renderBlocks(rest));
     } else if (/^---+$/.test(bl[0].trim())) {
       out.push(`<div class="bar"></div>`);
-    } else if (bl.every((l) => /^\s*-\s+/.test(l))) {
-      out.push("<ul>" + bl.map((l) => `<li>${renderInline(l.replace(/^\s*-\s+/, ""))}</li>`).join("") + "</ul>");
+    } else if (bl.every((l) => /^\s*[-*+]\s+/.test(l))) {
+      out.push("<ul>" + bl.map((l) => `<li>${renderInline(l.replace(/^\s*[-*+]\s+/, ""))}</li>`).join("") + "</ul>");
     } else if (bl.every((l) => /^\s*\d+\.\s+/.test(l))) {
       out.push("<ol>" + bl.map((l) => `<li>${renderInline(l.replace(/^\s*\d+\.\s+/, ""))}</li>`).join("") + "</ol>");
     } else if (bl.every((l) => /^\s*>\s?/.test(l))) {
@@ -106,7 +91,29 @@ function renderBody(body) {
       out.push(`<p>${renderInline(bl.join(" "))}</p>`);
     }
   }
-  return `<div class="md">${out.join("\n")}</div>`;
+  return out.join("\n");
+}
+
+// fenced code blocks extracted here so renderBlocks can stay recursive
+let FENCES = [];
+function renderBody(body) {
+  // drop the leading "# Title" -- the title is shown separately
+  const lines = body.split("\n");
+  if (lines.length && lines[0].startsWith("# ")) lines.shift();
+  // pull out fenced code blocks first (they may contain blank lines);
+  // each fence becomes its own block so it never merges into a paragraph.
+  // the opening fence may carry a list-item prefix ("- ```mermaid").
+  FENCES = [];
+  const nofence = lines
+    .join("\n")
+    .replace(/^[ \t]*(?:[-*+]|\d+\.)?[ \t]*```([^\n]*)\n([\s\S]*?)^[ \t]*```[ \t]*$/gm, (m, lang, code) => {
+      FENCES.push({
+        lang: lang.trim().toLowerCase(),
+        code: code.replace(/\n+$/, ""),
+      });
+      return `\n\n\uE200${FENCES.length - 1}\uE200\n\n`;
+    });
+  return `<div class="md">${renderBlocks(nofence)}</div>`;
 }
 
 function metaLine(p) {
