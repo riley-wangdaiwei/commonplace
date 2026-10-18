@@ -4,7 +4,6 @@ title: ""
 type: question
 category: ""
 date: ""
-status: todo
 label: ""
 ---
 
