@@ -25,5 +25,5 @@ What are the core distinctions btw metaphors that arise from the neurological co
 Application
 - educational: use colors, textures to give feeling / concepts
 
-[Q18 (To be linked)]
+[[Q18 (To be linked)]]
 - 比喻的力量应该无比强大。When I talk to Gemini about my weird feelings and they are so personal and untold but we connect on metaphors. It clicks, It makes feel more seen than talking to a therapist. AI by interpreting and just retelling the story, shows that it understands and is intelligent.
