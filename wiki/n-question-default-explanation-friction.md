@@ -4,7 +4,7 @@ title: Defaults and the having-to-explain friction
 type: question
 category: privacy
 date: 2026-10-18
-status: todo
+status:
 label: explanation friction
 ---
 
