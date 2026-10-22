@@ -49,7 +49,7 @@
    "year": "",
    "venue": "",
    "url": "",
-   "body": "# game-theory\n\n- [[n-notion-strategic-voting]] — Strategic Voting\n- [[n-notion-minority-game]] — The minority game\n- [[n-toread-the-stag-hunt-game-the-norm-of-behavior]] — The stag hunt game & the norm of behavior\n",
+   "body": "# game-theory\n\n- [[n-reading-strategic-voting]] — Strategic Voting\n- [[n-reading-minority-game]] — The minority game\n- [[n-toread-the-stag-hunt-game-the-norm-of-behavior]] — The stag hunt game & the norm of behavior\n",
    "links": []
   },
   {
@@ -65,7 +65,7 @@
    "year": "",
    "venue": "",
    "url": "",
-   "body": "# privacy\n\n- [[n-mcp-48h-20261004]] — MCP servers had a rough 48 hours: 4 unauthenticated CVEs\n- [[n-notion-shame-pride]] — Shame and Pride\n- [[n-notion-future-imperfect-5]] — Future Imperfect Chpt 5\n- [[n-notion-antitrust-fb]] — Antitrust Economics at a time of upheaval: Chp14 The German Facebook Case\n- [[n-notion-firm-boundaries]] — Firm boundaries revisited (Masten, Lafontaine & Slade, JEL 2007)\n- [[n-toread-privacy-as-contextual-integrity-nissenba]] — Privacy as Contextual Integrity (Nissenbaum)\n",
+   "body": "# privacy\n\n- [[n-mcp-48h-20261004]] — MCP servers had a rough 48 hours: 4 unauthenticated CVEs\n- [[n-reading-shame-pride]] — Shame and Pride\n- [[n-reading-future-imperfect-5]] — Future Imperfect Chpt 5\n- [[n-reading-antitrust-fb]] — Antitrust Economics at a time of upheaval: Chp14 The German Facebook Case\n- [[n-reading-firm-boundaries]] — Firm boundaries revisited (Masten, Lafontaine & Slade, JEL 2007)\n- [[n-toread-privacy-as-contextual-integrity-nissenba]] — Privacy as Contextual Integrity (Nissenbaum)\n",
    "links": []
   },
   {
@@ -81,7 +81,7 @@
    "year": "",
    "venue": "",
    "url": "",
-   "body": "# web3\n\n- [[n-notion-vitalik-privacy]] — Why I support Privacy\n- [[n-notion-trust-at-scale]] — Trust at Scale: The Economic Limits of Cryptocurrencies and Blockchains\n",
+   "body": "# web3\n\n- [[n-reading-vitalik-privacy]] — Why I support Privacy\n- [[n-reading-trust-at-scale]] — Trust at Scale: The Economic Limits of Cryptocurrencies and Blockchains\n",
    "links": []
   },
   {
@@ -192,8 +192,8 @@
    "authors": "Phillip Sheldrake",
    "year": "",
    "venue": "",
-   "url": "https://philipsheldrake.com/2022/07/digital-identity-is-not-human-identity-and-that-matters/",
-   "body": "# Digital Identity is not Human Identity\n\n## Thesis\nThis is connected to [[hub-privacy]], talking about privacy decisions delegation.\n\n## Quotes\n- \n\n## Notes\n- \n",
+   "url": "https://generative-identity.org/human-identity-the-number-one-challenge-in-computer-science/",
+   "body": "# Digital Identity is not Human Identity\n\nThis is connected to [[hub-privacy]], talking about privacy decisions delegation.\n## Thesis\n\"The conceptualization of identity predominating computer science today does not accommodate the complexity nor symmathesy — contextual mutual learning through interaction (Bateson 2015) — of human identity as other disciplines conceptualise it working in the world.\"\n## Quotes\n- \n\n## Notes\n- \n",
    "links": [
     "hub-privacy"
    ]
@@ -865,7 +865,7 @@
    "category": "privacy",
    "kind": "",
    "date": "2026-10-18",
-   "status": "todo",
+   "status": "",
    "authors": "",
    "year": "",
    "venue": "",
