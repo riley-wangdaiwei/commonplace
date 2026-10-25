@@ -26,7 +26,7 @@ category: film
 - [[n-film-stalker]] — Stalker (Andrei Tarkovsky)
 - [[n-film-taste-of-cherry]] — Taste of Cherry (Abbas Kiarostami)
 - [[n-film-the-conversation]] — The Conversation (Francis Ford Coppola)
-- [[n-film-the-killing-of-a-chinese-bookie]] — The Killing of a Chinese Bookie (⁦⁨John Cassavetes)
+- [[n-film-the-killing-of-a-chinese-bookie]] — The Killing of a Chinese Bookie (John Cassavetes)
 - [[n-film-the-matrix]] — The Matrix (the Wachowskis)
 - [[n-film-the-sixth-sense]] — The Sixth Sense
 - [[n-film-the-social-network]] — The Social Network (David Fincher)
@@ -36,3 +36,5 @@ category: film
 - [[n-film-奥德赛]] — 奥德赛 (诺兰)
 - [[n-film-机器人总动员]] — 机器人总动员
 - [[n-film-the-master]] — The Master (Paul Thomas Anderson)
+- [[n-film-paths-of-glory]] — Paths of Glory (Stanley Kubrick)
+- [[n-film-shiva-baby]] — Shiva Baby (Emma Seligman)
