@@ -1,7 +1,7 @@
 {
  "meta": {
   "generator": "build.py",
-  "pages": 82
+  "pages": 86
  },
  "pages": [
   {
@@ -18,6 +18,22 @@
    "venue": "",
    "url": "",
    "body": "# books\n\n- [[n-toread-askell-pareto-principles-in-infinite-eth]] — Askell - Pareto Principles in Infinite Ethics\n- [[n-book-beginning-theory]] — Beginning Theory (Peter Barry)\n- [[n-toread-beyond-culture]] — Beyond Culture\n- [[n-toread-examined-life]] — Examined Life\n- [[n-toread-how-to-read-a-book-adler]] — How to Read a Book (Adler)\n- [[n-book-how-we-invented-freedom-why-it-matters]] — How We Invented Freedom & Why it Matters (Daniel Hannan)\n- [[n-toread-john-rawls-modern-political-philosophy]] — John Rawls - Modern Political Philosophy\n- [[n-toread-jude-the-obscure]] — Jude the Obscure\n- [[n-toread-late-essays-coetzee]] — Late Essays (Coetzee)\n- [[n-toread-norton-anthology]] — Norton Anthology\n- [[n-toread-oranges-are-not-the-only-fruit]] — Oranges Are Not the Only Fruit\n- [[n-toread-the-art-of-voice-hoagland]] — The Art of Voice (Hoagland)\n- [[n-book-the-remains-of-the-day]] — The Remains of the Day (Kazuo Ishiguro)\n- [[n-toread-the-source-of-normativity-christine-kors]] — The source of normativity (Christine Korsgaard)\n- [[n-book-中国话]] — 中国话 (郑子宁)\n- [[n-toread-压缩现代性]] — 压缩现代性\n- [[n-toread-古拉格群岛]] — 古拉格群岛\n- [[n-toread-地下室手记]] — 地下室手记\n- [[n-toread-密码战争]] — 密码战争\n- [[n-toread-汉书]] — 汉书\n- [[n-toread-特权与焦虑]] — 特权与焦虑\n- [[n-book-看上去很美]] — 看上去很美 (王朔)\n- [[n-toread-纯粹理性批判]] — 纯粹理性批判\n- [[n-toread-重读二十世纪中国小说]] — 重读二十世纪中国小说\n",
+   "links": []
+  },
+  {
+   "id": "hub-evidence-gap",
+   "title": "evidence gap",
+   "label": "",
+   "type": "hub",
+   "category": "evidence-gap",
+   "kind": "",
+   "date": "",
+   "status": "",
+   "authors": "",
+   "year": "",
+   "venue": "",
+   "url": "",
+   "body": "# evidence gap\n\n- [[n-reading-campbell-egm-white-2020]] — Guidance for producing a Campbell evidence and gap map (White et al., 2020)\n- [[n-reading-3ie-egm-overview]] — Evidence gap maps (3ie overview)\n- [[n-reading-jbi-scoping-peters-2020]] — Updated methodological guidance for the conduct of scoping reviews (Peters et al., 2020)\n",
    "links": []
   },
   {
@@ -989,6 +1005,60 @@
    "url": "",
    "body": "## Question\nDoes 飞花令 indicate lexical / metaphoric richness or poorness in ancient chinese poems?\n\n## Why it matters\n* Investigating whether traditional literary games reflect high semantic entropy and combinatorial density or structural repetition in imagery, and exploring cross-cultural computational linguistics across poetic traditions.\n\n## Next\n* Perform a quantitative corpus analysis on Ancient Chinese poetry (e.g., 全唐诗) vs. other literary corpora to measure token-type ratio, Hapax Legomena frequency, and semantic diversity.\n\n## Notes\nReframe:\n- 飞花令是否说明中国古诗意境/意象高度重复？\n- 是否可以 statistically 统计 the abundance of Vocabularies / Symbols across ancient poetries in diff cultures?\n- 日本有 Uta-garuta, but it's diff\n  日本的相似文化中，意象相同文字代表的意象是否有异同？\n\nOther Perspectives\n- The game could only thrive in a culture where poetry was the pinnacle of literary achievement\n- Foundation: single syllable, single morpheme language\n- hapax legomena found in Chinese, is high\n\nOther subjects:\n- cryptography : ?\n- AI ?",
    "links": []
+  },
+  {
+   "id": "n-reading-3ie-egm-overview",
+   "title": "Evidence gap maps",
+   "label": "",
+   "type": "reading",
+   "category": "evidence-gap",
+   "kind": "article",
+   "date": "",
+   "status": "todo",
+   "authors": "3ie",
+   "year": "",
+   "venue": "3ie",
+   "url": "https://www.3ieimpact.org/evidence-hub/evidence-gap-maps",
+   "body": "# Evidence gap maps (3ie overview)\n\nPart of [[hub-evidence-gap]].\n\n## Thesis\n\nOverview of evidence gap maps: systematic search for published and unpublished evidence, and mapping studies to a transparent framework.\n\n## Quotes\n\n-\n\n## Critique\n\n## Notes\n\n- Systematic search covers both published and unpublished evidence\n- Studies are mapped to a transparent framework\n",
+   "links": [
+    "hub-evidence-gap"
+   ]
+  },
+  {
+   "id": "n-reading-campbell-egm-white-2020",
+   "title": "Guidance for producing a Campbell evidence and gap map",
+   "label": "",
+   "type": "reading",
+   "category": "evidence-gap",
+   "kind": "article",
+   "date": "",
+   "status": "todo",
+   "authors": "White et al.",
+   "year": "2020",
+   "venue": "Campbell Systematic Reviews",
+   "url": "https://doi.org/10.1002/cl2.1125",
+   "body": "# Guidance for producing a Campbell evidence and gap map (White et al., 2020)\n\nPart of [[hub-evidence-gap]].\n\n## Thesis\n\nGuidance for producing a Campbell evidence and gap map.\n\n## Quotes\n\n-\n\n## Critique\n\n## Notes\n\n- Framework piloting\n- Clear category definitions\n- A term dictionary\n- Broad enough categories, to avoid a needlessly fragmented map\n",
+   "links": [
+    "hub-evidence-gap"
+   ]
+  },
+  {
+   "id": "n-reading-jbi-scoping-peters-2020",
+   "title": "Updated methodological guidance for the conduct of scoping reviews",
+   "label": "",
+   "type": "reading",
+   "category": "evidence-gap",
+   "kind": "article",
+   "date": "",
+   "status": "todo",
+   "authors": "Peters et al.",
+   "year": "2020",
+   "venue": "JBI Evidence Synthesis",
+   "url": "https://doi.org/10.11124/JBIES-20-00167",
+   "body": "# Updated methodological guidance for the conduct of scoping reviews (Peters et al., 2020)\n\nPart of [[hub-evidence-gap]].\n\n## Thesis\n\nUpdated JBI guidance for conducting scoping reviews.\n\n## Quotes\n\n-\n\n## Critique\n\n## Notes\n\n- Predefine and pilot a standardized data-charting form\n- The form is aligned to the research questions and eligibility criteria\n",
+   "links": [
+    "hub-evidence-gap"
+   ]
   },
   {
    "id": "n-toread-askell-pareto-principles-in-infinite-eth",
