@@ -1,7 +1,7 @@
 {
  "meta": {
   "generator": "build.py",
-  "pages": 80
+  "pages": 81
  },
  "pages": [
   {
@@ -404,6 +404,22 @@
    "venue": "",
    "url": "",
    "body": "# Mean Street\n\n- Director: Martin Scorsese\n- Watched: 2026-08-30 (家庭)\n",
+   "links": []
+  },
+  {
+   "id": "n-film-paths-of-glory",
+   "title": "Paths of Glory",
+   "label": "",
+   "type": "film",
+   "category": "film",
+   "kind": "",
+   "date": "",
+   "status": "todo",
+   "authors": "Stanley Kubrick",
+   "year": "",
+   "venue": "",
+   "url": "",
+   "body": "# Paths of Glory\n\n- Director: Stanley Kubrick\n",
    "links": []
   },
   {
