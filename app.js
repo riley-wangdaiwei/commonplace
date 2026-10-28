@@ -37,17 +37,28 @@ function renderInlineCore(text) {
 }
 
 function renderInline(text) {
-  // protect `code spans` from inline formatting, then restore them
+  // protect `code spans` and $math$ from inline formatting, then restore them.
+  // math itself is rendered by KaTeX in viewPage; here we only keep it intact
+  // (otherwise *...* inside a formula would be mistaken for italics).
   const codes = [];
+  const maths = [];
+  const protectMath = (part) => {
+    // display math first, then single-line inline math
+    return part
+      .replace(/\$\$([\s\S]+?)\$\$/g, (m) => `\uE001${maths.push(m) - 1}\uE001`)
+      .replace(/\$([^$\n]+?)\$/g, (m) => `\uE001${maths.push(m) - 1}\uE001`);
+  };
   const html = String(text)
     .split(/(`[^`\n]+`)/g)
     .map((part, i) =>
       i % 2 === 1
         ? `\uE000${codes.push(part.slice(1, -1)) - 1}\uE000`
-        : renderInlineCore(part)
+        : renderInlineCore(protectMath(part))
     )
     .join("");
-  return html.replace(/\uE000(\d+)\uE000/g, (m, n) => `<code>${esc(codes[+n])}</code>`);
+  return html
+    .replace(/\uE000(\d+)\uE000/g, (m, n) => `<code>${esc(codes[+n])}</code>`)
+    .replace(/\uE001(\d+)\uE001/g, (m, n) => esc(maths[+n]));
 }
 
 function renderBlocks(text) {
@@ -674,6 +685,18 @@ ${bl.length ? bl.map((b) => `<div class="link"><a href="#/${b.id}">${esc(b.title
     try {
       const r = mermaid.run({ querySelector: "#view .mermaid" });
       if (r && r.catch) r.catch(() => {});
+    } catch (e) {}
+  }
+  if (window.renderMathInElement) {
+    try {
+      renderMathInElement(v, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$", right: "$", display: false },
+        ],
+        throwOnError: false,
+        ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+      });
     } catch (e) {}
   }
 }
