@@ -15,13 +15,13 @@ label: ""
 
 # Ellison IO Lecture Notes
 
-Self-study notes. L01: Monopoly Pricing & Durable Goods, I — Glenn Ellison.
-
 ## Contents
 
 - Single Product Monopoly Pricing
 - Monopoly and Product Quality
 - Multiple Product Monopoly Pricing
+
+Self-study notes. L01: Monopoly Pricing & Durable Goods, I — Glenn Ellison.
 
 ## Single Product Monopoly Pricing
 
