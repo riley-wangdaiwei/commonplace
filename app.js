@@ -297,6 +297,7 @@ const TYPE_GROUPS = [
   ["reading", "READINGS"],
   ["film", "FILMS"],
   ["book", "BOOKS"],
+  ["note", "NOTES"],
   ["hub", "HUBS"],
 ];
 
