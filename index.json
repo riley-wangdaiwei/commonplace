@@ -1,7 +1,7 @@
 {
  "meta": {
   "generator": "build.py",
-  "pages": 87
+  "pages": 89
  },
  "pages": [
   {
@@ -1109,6 +1109,22 @@
    "links": []
   },
   {
+   "id": "n-toread-civilization-and-its-discontents",
+   "title": "Civilization and Its Discontents",
+   "label": "",
+   "type": "book",
+   "category": "book",
+   "kind": "book",
+   "date": "",
+   "status": "todo",
+   "authors": "Sigmund Freud",
+   "year": "",
+   "venue": "",
+   "url": "",
+   "body": "# Civilization and Its Discontents\n\nTranslation: James Strachey.\n",
+   "links": []
+  },
+  {
    "id": "n-toread-examined-life",
    "title": "Examined Life",
    "label": "",
@@ -1138,6 +1154,22 @@
    "venue": "",
    "url": "",
    "body": "# How to Read a Book (Adler)\n\n\nNotion Current list / Literature\n",
+   "links": []
+  },
+  {
+   "id": "n-toread-interpretation-of-dreams",
+   "title": "The Interpretation of Dreams: The Complete and Definitive Text",
+   "label": "",
+   "type": "book",
+   "category": "book",
+   "kind": "book",
+   "date": "",
+   "status": "todo",
+   "authors": "Sigmund Freud",
+   "year": "",
+   "venue": "",
+   "url": "",
+   "body": "# The Interpretation of Dreams: The Complete and Definitive Text\n\nTranslation: James Strachey.\n",
    "links": []
   },
   {
