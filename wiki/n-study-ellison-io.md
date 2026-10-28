@@ -17,9 +17,9 @@ label: ""
 
 ## Contents
 
-- Single Product Monopoly Pricing
-- Monopoly and Product Quality
-- Multiple Product Monopoly Pricing
+- [Single Product Monopoly Pricing](#single-product-monopoly-pricing)
+- [Monopoly and Product Quality](#monopoly-and-product-quality)
+- [Multiple Product Monopoly Pricing](#multiple-product-monopoly-pricing)
 
 Self-study notes. L01: Monopoly Pricing & Durable Goods, I — Glenn Ellison.
 

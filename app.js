@@ -61,6 +61,22 @@ function renderInline(text) {
     .replace(/\uE001(\d+)\uE001/g, (m, n) => esc(maths[+n]));
 }
 
+// heading slugs for in-page TOC links: GitHub/Obsidian-style, deduped per page
+let HEADING_SLUGS = {};
+function slugify(text) {
+  return text
+    .toLowerCase()
+    .replace(/[`*$[\]()]/g, "")
+    .replace(/[^\p{L}\p{N}]+/gu, "-")
+    .replace(/^-+|-+$/g, "");
+}
+function headingId(text) {
+  const base = slugify(text) || "section";
+  const n = HEADING_SLUGS[base] || 0;
+  HEADING_SLUGS[base] = n + 1;
+  return n === 0 ? base : `${base}-${n}`;
+}
+
 function renderBlocks(text) {
   const blocks = [];
   let cur = [];
@@ -87,7 +103,8 @@ function renderBlocks(text) {
     }
     const bl = b.split("\n");
     if (/^#{1,3} /.test(bl[0])) {
-      out.push(`<div class="md-h">${renderInline(bl[0].replace(/^#{1,3} /, ""))}</div>`);
+      const raw = bl[0].replace(/^#{1,3} /, "");
+      out.push(`<div class="md-h" id="${headingId(raw)}">${renderInline(raw)}</div>`);
       const rest = bl.slice(1).join("\n").trim();
       if (rest) out.push(renderBlocks(rest));
     } else if (/^---+$/.test(bl[0].trim())) {
@@ -115,6 +132,7 @@ function renderBody(body) {
   // each fence becomes its own block so it never merges into a paragraph.
   // the opening fence may carry a list-item prefix ("- ```mermaid").
   FENCES = [];
+  HEADING_SLUGS = {};
   const nofence = lines
     .join("\n")
     .replace(/^[ \t]*(?:[-*+]|\d+\.)?[ \t]*```([^\n]*)\n([\s\S]*?)^[ \t]*```[ \t]*$/gm, (m, lang, code) => {
@@ -748,6 +766,20 @@ async function init() {
 
   updateInboxCount();
   window.addEventListener("hashchange", route);
+  // in-page anchor links (e.g. a TOC entry linking to a heading below):
+  // scroll instead of routing -- route() would treat "#slug" as home.
+  document.getElementById("view").addEventListener("click", (e) => {
+    const a = e.target.closest ? e.target.closest("a") : null;
+    if (!a) return;
+    const href = a.getAttribute("href") || "";
+    if (href.startsWith("#") && !href.startsWith("#/")) {
+      const el = document.getElementById(decodeURIComponent(href.slice(1)));
+      if (el) {
+        e.preventDefault();
+        el.scrollIntoView();
+      }
+    }
+  });
   if (window.mermaid) {
     try {
       mermaid.initialize({ startOnLoad: false, theme: "neutral" });
