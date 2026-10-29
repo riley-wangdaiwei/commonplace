@@ -1,0 +1,35 @@
+---
+id: n-book-the-well-of-loneliness
+title: The Well of Loneliness
+type: book
+category: book
+author: Radclyffe Hall
+date: 
+status: 
+kind: book
+url: ""
+---
+
+# The Well of Loneliness
+
+- Author: Radclyffe Hall
+
+## Notes
+
+### 26/10/18
+
+... sympathetic characters also refuse to name Stephen, Puddle say, 'just because you are what you are...' And although Stephen's cry of, 'why am I am as I am - and what am I?' is apparently resolved, she still refrains from using sexological labels, or any labels at all. When meeting Valérie Seymour, Stephen fears that Valérie 'liked her because she thought me - oh, well, because she thought me what I am.' Stephen never refers to herself as an invert or as a lesbian.
+
+### P.9 — 26/10/19
+
+... For these two were strangely shy with each other. - it was almost grotesque, this shyness of theirs, as existing between mother and child. ... Stephen, acutely responsive to beauty, would be dimly longing to find expression for a feeling almost amounting to worship, that her mother's face has awakened. But Anna, looking gravely at her daughter, noting the plentiful auburn hair, the brave hazel eyes that were so like the father's, as indeed were the child's whole expression and bearing, would be filled with a sudden antagonism that came very near to anger.
+
+She would lie awake at night and ponder this thing, scourging herself in an access of contrition, accusing herself of hardness of spirit, of being an unnatural mother. Sometimes she would shed slow, miserable tears, remembering the inarticulate Stephen.
+
+Sometimes Stephen pictured them living alone in a low thatched cottage, by the side of a mill stream — she had seen such a cottage not very far from Upton — and the water flowed quickly and made talking noises. ...
+
+In this picture it was Collins who talked about loving, and Stephen who gently but firmly rebuked her. 'There, there, Collins, don't be silly, you are a queer fish!' And yet all the while she would be longing to tell her how wonderful it was, ...
+
+### P.65 — 10/28
+
+... But now, here she was, very wishful to pray, while not knowing how to explain her dilemma: 'I'm terribly unhappy, dear, improbable God' — would not be a very propitious beginning. And yet at this moment she was wanting a God and a tangible one, very kind and paternal, a God with a white flowing beard and wide forehead, a benevolent parent who would lean out of Heaven and turn His face sideways the better to listen from His cloud, upheld by cherubs and angels. ...
