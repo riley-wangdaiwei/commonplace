@@ -1,7 +1,7 @@
 {
  "meta": {
   "generator": "build.py",
-  "pages": 91
+  "pages": 92
  },
  "pages": [
   {
@@ -1346,6 +1346,22 @@
    "venue": "",
    "url": "https://scholar.harvard.edu/files/shleifer/files/indust_big_push.pdf",
    "body": "# The stag hunt game & the norm of behavior\n\n## Notes\n\nCurrent list / Game Theory\n",
+   "links": []
+  },
+  {
+   "id": "n-toread-youtube-bookshelf",
+   "title": "YouTube 书架",
+   "label": "",
+   "type": "toread",
+   "category": "",
+   "kind": "",
+   "date": "",
+   "status": "todo",
+   "authors": "",
+   "year": "",
+   "venue": "",
+   "url": "",
+   "body": "# YouTube 书架\n\n午后困、想看视频时的默认架子。\n\n## YouTube 频道\n\n- [ ] [Adam Walker — Close Reading Poetry](https://www.youtube.com/@closereadingpoetry) — 诗歌细读，Harvard，讲得清楚好懂\n- [ ] [YC — Y Combinator](https://www.youtube.com/@ycombinator) — startup，创始人和投资人的课\n- [ ] [Perell — David Perell](https://www.youtube.com/@DavidPerellChannel) — writing online，How I Write\n\n## 课\n\n- [ ] [MIT film theory — The Film Experience](https://www.classcentral.com/course/mit-opencourseware-the-film-experience-fall-2013-40957) — David Thorburn，23 讲，免费，电影史 + 怎么看电影\n- [ ] [The American Novel — Yale](https://oyc.yale.edu/courses) — Hungerford，American Novel Since 1945，讲小说故事，免费有音频\n- [ ] [MoMA — Seeing Through Photographs](https://www.coursera.org/learn/photography) — Coursera，audit 免费，6 周；看图的课，需要睁眼，放清醒时段\n",
    "links": []
   },
   {
