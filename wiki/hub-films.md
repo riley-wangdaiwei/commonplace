@@ -38,3 +38,5 @@ category: film
 - [[n-film-the-master]] — The Master (Paul Thomas Anderson)
 - [[n-film-paths-of-glory]] — Paths of Glory (Stanley Kubrick)
 - [[n-film-shiva-baby]] — Shiva Baby (Emma Seligman)
+- [[n-film-the-prestige]] — The Prestige (Christopher Nolan)
+- [[n-film-se7en]] — Se7en (David Fincher)
