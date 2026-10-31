@@ -19,7 +19,8 @@ This is connected to [[hub-privacy]], talking about privacy decisions delegation
 ## Thesis
 "The conceptualization of identity predominating computer science today does not accommodate the complexity nor symmathesy — contextual mutual learning through interaction (Bateson 2015) — of human identity as other disciplines conceptualise it working in the world."
 ## Quotes
-- 
+- This observation moves our framing from monologism, in which individuals and societies are considered the analytical primes, to dialogism, which instead emphasises actions and interactions, including contextual discourse.
+	- 
 
 ## Notes
 - 
