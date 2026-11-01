@@ -16,7 +16,7 @@ Is part of the cost of opting out of a default the cost of having to explain you
 
 ## Why it matters
 
-The consent-architecture cost model (professor's frame: information acquisition vs. toggle-switching) may be missing a third cost: leaving a default means leaving common ground, and the system taxes the leaver in explanations. "Are you sure?" opt-out dialogs are the platform demanding an explanation from the non-default choice. The default user is legible without explaining; the opt-out user must justify herself to keep going. Paragraph for the narrative section on defaults and costly attention.
+The consent-architecture cost model (professor's frame: information acquisition vs. toggle-switching) may be missing a third cost: leaving a default ([[hub-privacy]]) means leaving common ground, and the system taxes the leaver in explanations. "Are you sure?" opt-out dialogs are the platform demanding an explanation from the non-default choice. The default user is legible without explaining; the opt-out user must justify herself to keep going. Paragraph for the narrative section on defaults and costly attention.
 
 ## Next
 
