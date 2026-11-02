@@ -20,6 +20,7 @@ label: ""
 - [Single Product Monopoly Pricing](#single-product-monopoly-pricing)
 - [Monopoly and Product Quality](#monopoly-and-product-quality)
 - [Multiple Product Monopoly Pricing](#multiple-product-monopoly-pricing)
+- [Durable Goods Monopoly](#durable-goods-monopoly)
 
 Self-study notes. L01: Monopoly Pricing & Durable Goods, I — Glenn Ellison.
 
@@ -92,3 +93,29 @@ $$\frac{p_i - c_i}{p_i} = -\frac{1}{\varepsilon_{ii}} - \frac{p_j - c_j}{p_i \cd
 with $(p_j - c_j) > 0$, and $\partial x_j / \partial p_i > 0$ for substitutes, $< 0$ for complements.
 
 Example noted on the page: newspapers and ads — ① the newspaper sells more; ② the ads are largely profitable.
+
+## Durable Goods Monopoly
+
+Two-period. $\theta \in [0, 1] \sim F(\theta)$.
+
+Utility: $u = 2\theta - p_1$ if buy at $t = 1$; $u = \theta - p_2$ if buy at $t = 2$.
+
+Cutoffs: types $\theta < \hat\theta_2$ don't buy; $\hat\theta_2 \le \theta < \hat\theta_1$ buy at $t = 2$; $\theta \ge \hat\theta_1$ buy at $t = 1$.
+
+$p_2 = \hat\theta_2$. The marginal $t = 1$ buyer is indifferent between buying at $t = 1$ and waiting:
+
+$$2\hat\theta_1 - p_1 = \hat\theta_1 - p_2 \Rightarrow p_1 = \hat\theta_1 + p_2 = \hat\theta_1 + \hat\theta_2$$
+
+Monopolist's problem:
+
+$$\max_{\hat\theta_2 \le \hat\theta_1} \Pi(\hat\theta_1, \hat\theta_2)$$
+
+$$\Pi = (\hat\theta_1 + \hat\theta_2 - c)[1 - F(\hat\theta_1)] + (\hat\theta_2 - c)[F(\hat\theta_1) - F(\hat\theta_2)] = \hat\theta_1[1 - F(\hat\theta_1)] + (\hat\theta_2 - c)[1 - F(\hat\theta_2)]$$
+
+$\Rightarrow$ Two separate monopoly pricing problems: one with $c_1 = 0$, one with $c_2 = c > 0$.
+
+Since $c_1 (= 0) < c_2 (> 0) \Rightarrow MC_1 < MC_2$. With the price lower, the monopolist will dig deeper in the valuation (type) $\Rightarrow \hat\theta_1 < \hat\theta_2$. But $\hat\theta_1 \ge \hat\theta_2$ is given earlier, so $\hat\theta_1 = \hat\theta_2 \Rightarrow$ the monopoly only sells at $t = 1$.
+
+- The Rental Model
+- Commitment Problem
+- Coase Conjecture
