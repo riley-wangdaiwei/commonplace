@@ -1,12 +1,12 @@
 ---
 id: n-toread-nudge
-title: ""
+title: "Nudge"
 type: book
 category: ""
 kind: book
 date: ""
-status: todo
-authors: Richard H. Thaler
+status: done
+authors: Richard H. Thaler, Cass R. Sunstein
 year: ""
 venue: ""
 url: ""
