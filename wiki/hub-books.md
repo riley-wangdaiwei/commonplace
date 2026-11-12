@@ -30,3 +30,5 @@ category: book
 - [[n-book-看上去很美]] — 看上去很美 (王朔)
 - [[n-toread-纯粹理性批判]] — 纯粹理性批判
 - [[n-toread-重读二十世纪中国小说]] — 重读二十世纪中国小说
+- [[n-toread-the-art-of-the-personal-essay]] — The Art of the Personal Essay (Phillip Lopate)
+- [[n-toread-the-white-album]] — The White Album (Joan Didion)
