@@ -5,7 +5,7 @@ type: film
 category: film
 director: Emma Seligman
 date: 
-status: todo
+status: done
 ---
 
 # Shiva Baby

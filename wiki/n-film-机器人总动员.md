@@ -5,7 +5,7 @@ type: film
 category: film
 director: 
 date: 
-status: todo
+status: done
 ---
 
 # 机器人总动员

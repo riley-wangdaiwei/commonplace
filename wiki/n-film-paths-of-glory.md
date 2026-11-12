@@ -5,7 +5,7 @@ type: film
 category: film
 director: Stanley Kubrick
 date: 
-status: todo
+status: done
 ---
 
 # Paths of Glory
