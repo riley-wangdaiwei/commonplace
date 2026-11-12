@@ -1,7 +1,7 @@
 {
  "meta": {
   "generator": "build.py",
-  "pages": 96
+  "pages": 98
  },
  "pages": [
   {
@@ -17,7 +17,7 @@
    "year": "",
    "venue": "",
    "url": "",
-   "body": "# books\n\n- [[n-toread-askell-pareto-principles-in-infinite-eth]] — Askell - Pareto Principles in Infinite Ethics\n- [[n-book-beginning-theory]] — Beginning Theory (Peter Barry)\n- [[n-toread-beyond-culture]] — Beyond Culture\n- [[n-toread-examined-life]] — Examined Life\n- [[n-toread-how-to-read-a-book-adler]] — How to Read a Book (Adler)\n- [[n-book-how-we-invented-freedom-why-it-matters]] — How We Invented Freedom & Why it Matters (Daniel Hannan)\n- [[n-toread-john-rawls-modern-political-philosophy]] — John Rawls - Modern Political Philosophy\n- [[n-toread-jude-the-obscure]] — Jude the Obscure\n- [[n-toread-late-essays-coetzee]] — Late Essays (Coetzee)\n- [[n-toread-norton-anthology]] — Norton Anthology\n- [[n-toread-oranges-are-not-the-only-fruit]] — Oranges Are Not the Only Fruit\n- [[n-toread-the-art-of-voice-hoagland]] — The Art of Voice (Hoagland)\n- [[n-book-the-remains-of-the-day]] — The Remains of the Day (Kazuo Ishiguro)\n- [[n-toread-the-source-of-normativity-christine-kors]] — The source of normativity (Christine Korsgaard)\n- [[n-book-中国话]] — 中国话 (郑子宁)\n- [[n-toread-压缩现代性]] — 压缩现代性\n- [[n-toread-古拉格群岛]] — 古拉格群岛\n- [[n-toread-地下室手记]] — 地下室手记\n- [[n-toread-密码战争]] — 密码战争\n- [[n-toread-汉书]] — 汉书\n- [[n-toread-特权与焦虑]] — 特权与焦虑\n- [[n-book-看上去很美]] — 看上去很美 (王朔)\n- [[n-toread-纯粹理性批判]] — 纯粹理性批判\n- [[n-toread-重读二十世纪中国小说]] — 重读二十世纪中国小说\n",
+   "body": "# books\n\n- [[n-toread-askell-pareto-principles-in-infinite-eth]] — Askell - Pareto Principles in Infinite Ethics\n- [[n-book-beginning-theory]] — Beginning Theory (Peter Barry)\n- [[n-toread-beyond-culture]] — Beyond Culture\n- [[n-toread-examined-life]] — Examined Life\n- [[n-toread-how-to-read-a-book-adler]] — How to Read a Book (Adler)\n- [[n-book-how-we-invented-freedom-why-it-matters]] — How We Invented Freedom & Why it Matters (Daniel Hannan)\n- [[n-toread-john-rawls-modern-political-philosophy]] — John Rawls - Modern Political Philosophy\n- [[n-toread-jude-the-obscure]] — Jude the Obscure\n- [[n-toread-late-essays-coetzee]] — Late Essays (Coetzee)\n- [[n-toread-norton-anthology]] — Norton Anthology\n- [[n-toread-oranges-are-not-the-only-fruit]] — Oranges Are Not the Only Fruit\n- [[n-toread-the-art-of-voice-hoagland]] — The Art of Voice (Hoagland)\n- [[n-book-the-remains-of-the-day]] — The Remains of the Day (Kazuo Ishiguro)\n- [[n-toread-the-source-of-normativity-christine-kors]] — The source of normativity (Christine Korsgaard)\n- [[n-book-中国话]] — 中国话 (郑子宁)\n- [[n-toread-压缩现代性]] — 压缩现代性\n- [[n-toread-古拉格群岛]] — 古拉格群岛\n- [[n-toread-地下室手记]] — 地下室手记\n- [[n-toread-密码战争]] — 密码战争\n- [[n-toread-汉书]] — 汉书\n- [[n-toread-特权与焦虑]] — 特权与焦虑\n- [[n-book-看上去很美]] — 看上去很美 (王朔)\n- [[n-toread-纯粹理性批判]] — 纯粹理性批判\n- [[n-toread-重读二十世纪中国小说]] — 重读二十世纪中国小说\n- [[n-toread-the-art-of-the-personal-essay]] — The Art of the Personal Essay (Phillip Lopate)\n- [[n-toread-the-white-album]] — The White Album (Joan Didion)\n",
    "links": []
   },
   {
@@ -1367,6 +1367,22 @@
    "links": []
   },
   {
+   "id": "n-toread-the-art-of-the-personal-essay",
+   "title": "The Art of the Personal Essay",
+   "label": "",
+   "type": "book",
+   "category": "book",
+   "kind": "book",
+   "date": "",
+   "status": "todo",
+   "authors": "Phillip Lopate",
+   "year": "",
+   "venue": "",
+   "url": "",
+   "body": "# The Art of the Personal Essay\n\n- Author: Phillip Lopate\n",
+   "links": []
+  },
+  {
    "id": "n-toread-the-art-of-voice-hoagland",
    "title": "The Art of Voice (Hoagland)",
    "label": "",
@@ -1412,6 +1428,22 @@
    "venue": "",
    "url": "https://scholar.harvard.edu/files/shleifer/files/indust_big_push.pdf",
    "body": "# The stag hunt game & the norm of behavior\n\n## Notes\n\nCurrent list / Game Theory\n",
+   "links": []
+  },
+  {
+   "id": "n-toread-the-white-album",
+   "title": "The White Album",
+   "label": "",
+   "type": "book",
+   "category": "book",
+   "kind": "book",
+   "date": "",
+   "status": "todo",
+   "authors": "Joan Didion",
+   "year": "",
+   "venue": "",
+   "url": "",
+   "body": "# The White Album\n\n- Author: Joan Didion\n",
    "links": []
   },
   {
