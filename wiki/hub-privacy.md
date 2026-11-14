@@ -12,3 +12,4 @@ category: privacy
 - [[n-reading-antitrust-fb]] — Antitrust Economics at a time of upheaval: Chp14 The German Facebook Case
 - [[n-reading-firm-boundaries]] — Firm boundaries revisited (Masten, Lafontaine & Slade, JEL 2007)
 - [[n-toread-privacy-as-contextual-integrity-nissenba]] — Privacy as Contextual Integrity (Nissenbaum)
+- [[n-question-who-reviews-the-default]] — Who reviews the default
