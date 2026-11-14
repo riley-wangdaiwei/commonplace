@@ -1,7 +1,7 @@
 {
  "meta": {
   "generator": "build.py",
-  "pages": 245
+  "pages": 246
  },
  "pages": [
   {
@@ -81,7 +81,7 @@
    "year": "",
    "venue": "",
    "url": "",
-   "body": "# privacy\n\n- [[n-mcp-48h-20261004]] — MCP servers had a rough 48 hours: 4 unauthenticated CVEs\n- [[n-reading-shame-pride]] — Shame and Pride\n- [[n-reading-future-imperfect-5]] — Future Imperfect Chpt 5\n- [[n-reading-antitrust-fb]] — Antitrust Economics at a time of upheaval: Chp14 The German Facebook Case\n- [[n-reading-firm-boundaries]] — Firm boundaries revisited (Masten, Lafontaine & Slade, JEL 2007)\n- [[n-toread-privacy-as-contextual-integrity-nissenba]] — Privacy as Contextual Integrity (Nissenbaum)\n",
+   "body": "# privacy\n\n- [[n-mcp-48h-20261004]] — MCP servers had a rough 48 hours: 4 unauthenticated CVEs\n- [[n-reading-shame-pride]] — Shame and Pride\n- [[n-reading-future-imperfect-5]] — Future Imperfect Chpt 5\n- [[n-reading-antitrust-fb]] — Antitrust Economics at a time of upheaval: Chp14 The German Facebook Case\n- [[n-reading-firm-boundaries]] — Firm boundaries revisited (Masten, Lafontaine & Slade, JEL 2007)\n- [[n-toread-privacy-as-contextual-integrity-nissenba]] — Privacy as Contextual Integrity (Nissenbaum)\n- [[n-question-who-reviews-the-default]] — Who reviews the default\n",
    "links": []
   },
   {
@@ -3306,6 +3306,24 @@
    "url": "",
    "body": "# Is earning money actually the value you generate, or is it just the result of a game you participate in?\n\n## How this question is formed\n\n- Being a buyer and a seller feels like a performance, not something natural.\n- Money feels like a prop (道具) in a game called economics.\n- People spend money because they have money; if they didn't, they'd only buy necessary goods, not interesting things.\n- You depend on others to produce interesting goods for you, and you pay them money — basically to keep playing the game.\n- Becoming an adult, becoming a businessman, feels magical: how do you earn money? Somehow you just earn it.\n- Earning money doesn't feel like the value you generated — it feels like the result of a game you participated in.\n- To earn money you have to perform: make people believe you have value — as if you already have money — in order to earn money.\n- The other side of the same performance: people feel they have to spend money because they have it, so they give it to you.\n- You can end up with a product that has no use whatsoever — and the exchange still happens through the performance.\n- Unfinished: if this performance never happened…\n",
    "links": []
+  },
+  {
+   "id": "n-question-who-reviews-the-default",
+   "title": "who reviews the default",
+   "label": "who reviews the default",
+   "type": "question",
+   "category": "privacy",
+   "kind": "",
+   "date": "2026-11-13",
+   "status": "todo",
+   "authors": "",
+   "year": "",
+   "venue": "",
+   "url": "",
+   "body": "# Who actually reviews the default — and who gets privacy when reviewing is costly?\n\n## How this question is formed\n\n- Some people never review: they always take the default — \"the always-takers\".\n- People review only if $p > \\frac{d}{c_2}$ and $p < 1 - \\frac{d}{c_1}$; the interval exists only if $d < \\frac{c_1 c_2}{c_1 + c_2}$.\n- Reading the model: $p$ = probability the default is right; $d$ = cost of reviewing (attention, administrative burden); $c_1$ = cost of wrongly accepting a bad default; $c_2$ = cost of wrongly rejecting a good one.\n- If $d$ varies between people, the same friction gives people different access to privacy — an administrative burden.\n- Less attention might incur a \"lulling effect\".\n- It is also a delegation / agent problem: \"Who controls the agent that reviews permissions, and how can the user inspect or override its decisions?\"\n\n## The p line (labels corrected)\n\nThe photo labels the middle interval \"the always-takers\" and swaps the two tick labels. Following the inequalities above, the middle is where people review; the always-takers are at the high-$p$ end, where taking the default without reviewing is cheapest.\n\n```mermaid\nflowchart LR\n    Z[\"0\"] --- L[\"p under d/c2<br/>don't review: opt out<br/>nudgeable by the default\"] --- M[\"p between d/c2 and 1 - d/c1<br/>REVIEW\"] --- R[\"p over 1 - d/c1<br/>don't review: take the default<br/>the always-takers\"] --- O[\"1\"]\n```\n\nRelated: [[hub-privacy]]\n",
+   "links": [
+    "hub-privacy"
+   ]
   },
   {
    "id": "n-question-二元思维与多元的本质区别",
