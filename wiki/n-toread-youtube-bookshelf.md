@@ -23,5 +23,5 @@ url: ""
 ## 课
 
 - [ ] [MIT film theory — The Film Experience](https://www.classcentral.com/course/mit-opencourseware-the-film-experience-fall-2013-40957) — David Thorburn，23 讲，免费，电影史 + 怎么看电影
-- [ ] [The American Novel — Yale](https://oyc.yale.edu/courses) — Hungerford，American Novel Since 1945，讲小说故事，免费有音频
+- [ ] [The American Novel — Yale](https://www.youtube.com/watch?v=TyVAU5iGe0k) — Hungerford，American Novel Since 1945，讲小说故事，免费有音频
 - [ ] [MoMA — Seeing Through Photographs](https://www.coursera.org/learn/photography) — Coursera，audit 免费，6 周；看图的课，需要睁眼，放清醒时段
