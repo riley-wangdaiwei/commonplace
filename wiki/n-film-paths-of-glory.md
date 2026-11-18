@@ -15,3 +15,7 @@ status: done
 ## Notes
 
 - 顺着规则反抗的人，没有改变历史。
+
+## Themes
+
+- The man who could do nothing — 无奈的，但真的是无奈吗？有点类似 the banality of evil。
