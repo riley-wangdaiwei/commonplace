@@ -35,3 +35,17 @@ In this picture it was Collins who talked about loving, and Stephen who gently b
 It was fear that aroused their antagonism; in her they instinctively sensed an outlaw, and theirs was the task of policing nature.
 
 Outrageous, Puddle would feel it to be, that wilfully selfish tyranny of silence evolved by a crafty old ostrich of a world for its own well-being and comfort. The world hid its head in the sands of convention, so that seeing nothing it might avoid Truth. It said to itself: 'If seeing's believing, then I don't want to see — if silence is golden, it is also, in this case, very expedient.' There were moments when Puddle would feel sorely tempted to shout out loud at the world. ...
+
+... and her voice, although quite steady and grave, was somehow distinctly suggestive of laughter.
+
+... Angela held out her undamaged hand which Stephen took, but in great trepidation. Barely had it lain in her own for a moment, when she clumsily gave it back to its owner.
+
+... She wanted to retrieve the lost hand and stroke it, but unfortunately it was now stroking Tony.
+
+... The tea was too hot; it burnt her mouth badly. She grew scarlet and her eyes began to water. To cover her confusion she swallowed more tea, while Angela looked tactfully out of the window. But when she considered it safe to turn round, her expression, although still faintly amused, had something about it that was tender.
+
+... and the melancholy sound seemed to blend and mingle with her mood, which was now very gently depressed. A gentle but persistent sense of depression enveloped her whole being like a soft, grey cloak; and she did not wish to shake off this cloak, but rather to fold it more closely around her.
+
+... Have courage; do the best you can with your burden. But above all be honourable. Cling to your honour for the sake of those others who share the same burden. For their sakes show the world that people like you and they can be quite as selfless and fine as the rest of mankind. Let your life go to prove this — it would be a really great life-work, Stephen.
+
+... Someday the world will recognize this, but meanwhile there's plenty of work that's waiting. For the sake of all the others who are like you, but less strong and less gifted perhaps, many of them, it's up to you to have the courage to make good, and I'm here to help you do it, Stephen.
