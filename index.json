@@ -1,7 +1,7 @@
 {
  "meta": {
   "generator": "build.py",
-  "pages": 247
+  "pages": 248
  },
  "pages": [
   {
@@ -3272,6 +3272,22 @@
     "p.45 (To be linked)",
     "p.56 (To be continued)"
    ]
+  },
+  {
+   "id": "n-question-afraid-of-expressing",
+   "title": "afraid of expressing",
+   "label": "afraid of expressing",
+   "type": "question",
+   "category": "",
+   "kind": "",
+   "date": "",
+   "status": "todo",
+   "authors": "",
+   "year": "",
+   "venue": "",
+   "url": "",
+   "body": "# Are young people more afraid of expressing themselves because they're more exposed to the internet?\n\n## How this question is formed\n\n- Counterarguments are produced even faster than opinions.\n- If any great writers were alive at the present time, they might not have the courage to write their great works.\n",
+   "links": []
   },
   {
    "id": "n-question-bad-work-ethic-and-stickiness",
