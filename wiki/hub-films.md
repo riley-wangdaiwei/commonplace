@@ -159,3 +159,4 @@ category: film
 - [[n-film-dr-strangelove]] — Dr. Strangelove (Stanley Kubrick)
 - [[n-film-虎胆龙威]] — 虎胆龙威 (John McTiernan)
 - [[n-film-passion-of-joan-of-arc]] — The Passion of Joan of Arc (Carl Theodor Dreyer)
+- [[n-film-28-days-later]] — 28 Days Later (Danny Boyle)
